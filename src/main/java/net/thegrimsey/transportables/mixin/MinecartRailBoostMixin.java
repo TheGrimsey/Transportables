@@ -20,31 +20,26 @@ public abstract class MinecartRailBoostMixin {
 	protected void moveOnRail(BlockPos pos, BlockState state, CallbackInfo info)
 	{
 		AbstractMinecartEntity entity = (AbstractMinecartEntity)(Object)this;
-
 		AbstractRailBlock abstractRailBlock = (AbstractRailBlock)state.getBlock();
-		if (abstractRailBlock == Transportables.HIGHPOWERED_RAIL) {
 
+		if (abstractRailBlock == Transportables.HIGHPOWERED_RAIL) {
 			RailShape railShape = (RailShape)state.get(abstractRailBlock.getShapeProperty());
-			Vec3d vec3d7 = entity.getVelocity();
-			double af = Math.sqrt(entity.squaredHorizontalLength(vec3d7));
-			if (af > 0.01D) {
+			Vec3d velocity = entity.getVelocity();
+			double squaredSpeed = Math.sqrt(entity.squaredHorizontalLength(velocity));
+
+			if (squaredSpeed > 0.01D) {
 				double accelerationScale = 0.06D;
-				entity.setVelocity(vec3d7.add(vec3d7.x / af * accelerationScale, 0.0D, vec3d7.z / af * accelerationScale));
+				entity.setVelocity(velocity.add(velocity.x / squaredSpeed * accelerationScale, 0.0D, velocity.z / squaredSpeed * accelerationScale));
 			} else {
-				Vec3d vec3d8 = entity.getVelocity();
-				double x = vec3d8.x;
-				double z = vec3d8.z;
+				double x = velocity.x;
+				double z = velocity.z;
 				if (railShape == RailShape.EAST_WEST) {
 					if (((EntityAccessor)entity).invokeWillHitBlockAt(pos.west())) {
 						x = 0.02D;
 					} else if (((EntityAccessor)entity).invokeWillHitBlockAt(pos.east())) {
 						x = -0.02D;
 					}
-				} else {
-					if (railShape != RailShape.NORTH_SOUTH) {
-						return;
-					}
-
+				} else if(railShape == RailShape.NORTH_SOUTH) {
 					if (((EntityAccessor)entity).invokeWillHitBlockAt(pos.north())) {
 						z = 0.02D;
 					} else if (((EntityAccessor)entity).invokeWillHitBlockAt(pos.south())) {
@@ -52,7 +47,7 @@ public abstract class MinecartRailBoostMixin {
 					}
 				}
 
-				entity.setVelocity(x, vec3d8.y, z);
+				entity.setVelocity(x, velocity.y, z);
 			}
 		}
 	}
