@@ -1,6 +1,7 @@
 {
     "replace": false,
     "values": [
-        "transportables:highpowered_rail"
+        "transportables:highpowered_rail",
+        "transportables:launching_rail"
     ]
 }

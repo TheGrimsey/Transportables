@@ -10,4 +10,8 @@ public interface EntityAccessor {
 
     @Invoker("willHitBlockAt")
     public boolean invokeWillHitBlockAt(BlockPos pos);
+
+    @Invoker("getMaxOffRailSpeed")
+    public double invokeGetMaxOffRailSpeed();
+
 }

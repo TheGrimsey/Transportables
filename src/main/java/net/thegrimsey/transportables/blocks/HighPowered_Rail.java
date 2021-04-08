@@ -4,7 +4,6 @@ import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.enums.RailShape;
-import net.minecraft.entity.vehicle.MinecartEntity;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
@@ -20,7 +19,7 @@ public class HighPowered_Rail extends AbstractRailBlock {
 
     public HighPowered_Rail(Settings settings) {
         super(true, settings);
-        this.setDefaultState((BlockState)((BlockState)((BlockState)this.stateManager.getDefaultState()).with(SHAPE, RailShape.NORTH_SOUTH)).with(POWERED, false));
+        this.setDefaultState(this.stateManager.getDefaultState().with(SHAPE, RailShape.NORTH_SOUTH).with(POWERED, false));
     }
 
     @Override
@@ -35,7 +34,7 @@ public class HighPowered_Rail extends AbstractRailBlock {
             int y = pos.getY();
             int z = pos.getZ();
             boolean bl = true;
-            RailShape railShape = (RailShape)state.get(SHAPE);
+            RailShape railShape = state.get(SHAPE);
             switch(railShape) {
                 case NORTH_SOUTH:
                     if (boolean4) {
@@ -109,13 +108,13 @@ public class HighPowered_Rail extends AbstractRailBlock {
         if (!blockState.isOf(this)) {
             return false;
         } else {
-            RailShape railShape = (RailShape)blockState.get(SHAPE);
+            RailShape railShape = blockState.get(SHAPE);
             if (shape == RailShape.EAST_WEST && (railShape == RailShape.NORTH_SOUTH || railShape == RailShape.ASCENDING_NORTH || railShape == RailShape.ASCENDING_SOUTH)) {
                 return false;
             } else if (shape == RailShape.NORTH_SOUTH && (railShape == RailShape.EAST_WEST || railShape == RailShape.ASCENDING_EAST || railShape == RailShape.ASCENDING_WEST)) {
                 return false;
-            } else if ((Boolean)blockState.get(POWERED)) {
-                return world.isReceivingRedstonePower(pos) ? true : this.isPoweredByOtherRails(world, pos, blockState, bl, distance + 1);
+            } else if (blockState.get(POWERED)) {
+                return world.isReceivingRedstonePower(pos) || this.isPoweredByOtherRails(world, pos, blockState, bl, distance + 1);
             } else {
                 return false;
             }
@@ -123,19 +122,19 @@ public class HighPowered_Rail extends AbstractRailBlock {
     }
 
     protected void updateBlockState(BlockState state, World world, BlockPos pos, Block neighbor) {
-        boolean currentPowerState = (Boolean)state.get(POWERED);
+        boolean currentPowerState = state.get(POWERED);
         boolean newPowerState = world.isReceivingRedstonePower(pos) || this.isPoweredByOtherRails(world, pos, state, true, 0) || this.isPoweredByOtherRails(world, pos, state, false, 0);
         if (newPowerState != currentPowerState) {
-            world.setBlockState(pos, (BlockState)state.with(POWERED, newPowerState), 3);
+            world.setBlockState(pos, state.with(POWERED, newPowerState), 3);
             world.updateNeighborsAlways(pos.down(), this);
-            if (((RailShape)state.get(SHAPE)).isAscending()) {
+            if (state.get(SHAPE).isAscending()) {
                 world.updateNeighborsAlways(pos.up(), this);
             }
         }
     }
 
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(new Property[]{SHAPE, POWERED});
+        builder.add(SHAPE, POWERED);
     }
 
     static {
