@@ -17,13 +17,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MinecartRailBoostMixin {
 
 	@SuppressWarnings("ConstantConditions")
-	@Inject(at = @At("HEAD"), method = "moveOnRail")
+	@Inject(at = @At("HEAD"), method = "moveOnRail", cancellable = true)
 	protected void moveOnRail(BlockPos pos, BlockState state, CallbackInfo info)
 	{
 		// Forward rail moving to rail block. This makes it much easier to handle with just overriding the functions in subclasses.
 		AbstractRailBlock railBlock = (AbstractRailBlock)state.getBlock();
 		if (railBlock instanceof AbstractActionRail) {
-			((AbstractActionRail) railBlock).onMoveOnRail(pos, state, (AbstractMinecartEntity)(Object)this);
+			((AbstractActionRail) railBlock).onMoveOnRail(pos, state, (AbstractMinecartEntity)(Object)this, info);
 		}
 	}
 

@@ -14,6 +14,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.thegrimsey.transportables.mixin.EntityAccessor;
 import net.thegrimsey.transportables.util.MinecartUtil;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 public class HighPowered_Rail extends AbstractActionRail {
     public static final int MAX_POWER_SPREAD_DISTANCE = 8;
@@ -31,7 +32,7 @@ public class HighPowered_Rail extends AbstractActionRail {
     }
 
     @Override
-    public void onMoveOnRail(BlockPos pos, BlockState state, AbstractMinecartEntity minecart) {
+    public void onMoveOnRail(BlockPos pos, BlockState state, AbstractMinecartEntity minecart, CallbackInfo info) {
         // Slow down if this rail isn't powered.
         if(!state.get(HighPowered_Rail.POWERED))
         {

@@ -9,6 +9,7 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
 import net.minecraft.state.property.Property;
 import net.minecraft.util.math.BlockPos;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 public abstract class AbstractActionRail extends AbstractRailBlock {
     public static final Property<RailShape> SHAPE = Properties.STRAIGHT_RAIL_SHAPE;
@@ -22,7 +23,7 @@ public abstract class AbstractActionRail extends AbstractRailBlock {
         return SHAPE;
     }
 
-    public abstract void onMoveOnRail(BlockPos pos, BlockState state, AbstractMinecartEntity minecart);
+    public abstract void onMoveOnRail(BlockPos pos, BlockState state, AbstractMinecartEntity minecart, CallbackInfo info);
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
