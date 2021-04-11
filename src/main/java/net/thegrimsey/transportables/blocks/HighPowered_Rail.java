@@ -1,21 +1,24 @@
 package net.thegrimsey.transportables.blocks;
 
-import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.enums.RailShape;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.state.property.Property;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.thegrimsey.transportables.mixin.EntityAccessor;
+import net.thegrimsey.transportables.util.MinecartUtil;
 
-public class HighPowered_Rail extends AbstractRailBlock {
+public class HighPowered_Rail extends AbstractActionRail {
     public static final int MAX_POWER_SPREAD_DISTANCE = 8;
 
-    public static final Property<RailShape> SHAPE;
-    public static final BooleanProperty POWERED;
+    public static final BooleanProperty POWERED = Properties.POWERED;
 
     public HighPowered_Rail(Settings settings) {
         super(true, settings);
@@ -26,6 +29,32 @@ public class HighPowered_Rail extends AbstractRailBlock {
     public Property<RailShape> getShapeProperty() {
         return SHAPE;
     }
+
+    @Override
+    public void onMoveOnRail(BlockPos pos, BlockState state, AbstractMinecartEntity minecart) {
+        // Slow down if this rail isn't powered.
+        if(!state.get(HighPowered_Rail.POWERED))
+        {
+            // Minecart will lose 75% of velocity for each tick on the rail.
+            double slowDownScaler = 0.25D;
+            minecart.setVelocity(minecart.getVelocity().multiply(slowDownScaler, 1.0D, slowDownScaler));
+            return;
+        }
+
+        RailShape railShape = state.get(getShapeProperty());
+        Vec3d velocity = minecart.getVelocity();
+        double speed = Math.sqrt(Entity.squaredHorizontalLength(velocity));
+
+        // If moving: Accelerate to full-speed in direction.
+        if (speed > 0.01D) {
+            // Because Minecart forward rotation is not equal to direction of movement we instead try to extrapolate it from the direction we are moving in.
+            minecart.setVelocity(velocity.normalize().multiply(((EntityAccessor)minecart).invokeGetMaxOffRailSpeed()*10D));
+        } else {
+            // We aren't moving so let's check if we will hit blocks that will set us moving.
+            MinecartUtil.HandleBlockHit(pos, minecart, railShape);
+        }
+    }
+
     protected boolean isPoweredByOtherRails(World world, BlockPos pos, BlockState state, boolean boolean4, int distance) {
         if (distance >= MAX_POWER_SPREAD_DISTANCE) {
             return false;
@@ -134,11 +163,7 @@ public class HighPowered_Rail extends AbstractRailBlock {
     }
 
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(SHAPE, POWERED);
-    }
-
-    static {
-        SHAPE = Properties.STRAIGHT_RAIL_SHAPE;
-        POWERED = Properties.POWERED;
+        super.appendProperties(builder);
+        builder.add(POWERED);
     }
 }

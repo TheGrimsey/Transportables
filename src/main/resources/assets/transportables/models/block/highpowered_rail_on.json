@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/rail_flat",
   "textures": {
-    "rail": "minecraft:block/wet_sponge"
+    "rail": "transportables:block/highpowered_rail_on"
   }
 }

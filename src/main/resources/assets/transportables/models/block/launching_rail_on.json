@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/rail_flat",
   "textures": {
-    "rail": "minecraft:block/cobblestone"
+    "rail": "transportables:block/launching_rail_on"
   }
 }

@@ -7,11 +7,10 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(AbstractMinecartEntity.class)
 public interface EntityAccessor {
-
     @Invoker("willHitBlockAt")
-    public boolean invokeWillHitBlockAt(BlockPos pos);
+    boolean invokeWillHitBlockAt(BlockPos pos);
 
     @Invoker("getMaxOffRailSpeed")
-    public double invokeGetMaxOffRailSpeed();
+    double invokeGetMaxOffRailSpeed();
 
 }
