@@ -8,5 +8,6 @@ public class Transportables implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		TransportablesBlocks.RegisterBlocks();
+		TransportablesItems.RegisterItems();
 	}
 }

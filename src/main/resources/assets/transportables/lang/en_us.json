@@ -1,0 +1,10 @@
+{
+    "block.transportables.highpowered_rail": "High-Powered Rail",
+    "block.transportables.launching_rail": "Launching Rail",
+    "block.transportables.telesender_rail": "Tele-Sender Rail",
+    
+    "item.transportables.raillinker": "Rail-Linker",
+
+    "transportables.raillinker.savedposition": "Saved position (%d, %d, %d).",
+    "transportables.raillinker.updatedposition": "Updated rail target to (%d, %d, %d)."
+}
