@@ -4,7 +4,8 @@
   "package": "net.thegrimsey.transportables.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "EntityAccessor",
+    "LivingEntityClimbSpeedMixin",
+    "MinecartEntityAccessor",
     "MinecartRailBoostMixin",
     "IsRailMixin"
   ],

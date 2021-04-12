@@ -4,7 +4,8 @@
     "block.transportables.telesender_rail": "Tele-Sender Rail",
     
     "item.transportables.raillinker": "Rail-Linker",
-
     "transportables.raillinker.savedposition": "Saved position (%d, %d, %d).",
-    "transportables.raillinker.updatedposition": "Updated rail target to (%d, %d, %d)."
+    "transportables.raillinker.updatedposition": "Updated rail target to (%d, %d, %d).",
+    
+    "block.transportables.iron_ladder": "Iron Ladder"
 }
