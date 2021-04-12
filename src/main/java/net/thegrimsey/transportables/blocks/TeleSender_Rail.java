@@ -1,13 +1,21 @@
 package net.thegrimsey.transportables.blocks;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.block.enums.RailShape;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.Properties;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
 import net.thegrimsey.transportables.blocks.entity.TeleSender_RailEntity;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -15,20 +23,21 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 public class TeleSender_Rail extends AbstractActionRail implements BlockEntityProvider {
+    public static final BooleanProperty POWERED = Properties.POWERED;
+
     public TeleSender_Rail(Settings settings) {
         super(true, settings);
+        this.setDefaultState(this.stateManager.getDefaultState().with(SHAPE, RailShape.NORTH_SOUTH).with(POWERED, false));
     }
 
     @Override
     public void onMoveOnRail(BlockPos pos, BlockState state, AbstractMinecartEntity minecart, CallbackInfo info) {
         TeleSender_RailEntity blockEntity = (TeleSender_RailEntity)minecart.world.getBlockEntity(pos);
-        if(blockEntity == null || !blockEntity.hasDestination())
+        if(blockEntity == null || !blockEntity.hasDestination() || !state.get(POWERED))
             return;
 
+        // Move minecart. Not using teleport because of problems with passengers.
         minecart.refreshPositionAndAngles(blockEntity.getDestinationX() + 0.5D, blockEntity.getDestinationY(), blockEntity.getDestinationZ() + 0.5D, minecart.yaw, minecart.pitch);
-
-        System.out.println("Teleporting entity to: X: " + blockEntity.getDestinationX() + " Y: " + blockEntity.getDestinationY() + " Z: " + blockEntity.getDestinationZ());
-        // TODO Rotate velocity.
 
         info.cancel();
     }
@@ -37,5 +46,30 @@ public class TeleSender_Rail extends AbstractActionRail implements BlockEntityPr
     @Override
     public BlockEntity createBlockEntity(BlockView world) {
         return new TeleSender_RailEntity();
+    }
+
+    protected void updateBlockState(BlockState state, World world, BlockPos pos, Block neighbor) {
+        boolean currentPowerState = state.get(POWERED);
+        boolean newPowerState = world.isReceivingRedstonePower(pos);
+        if (newPowerState != currentPowerState) {
+            world.setBlockState(pos, state.with(POWERED, newPowerState), 3);
+            world.updateNeighborsAlways(pos.down(), this);
+            if (state.get(SHAPE).isAscending()) {
+                world.updateNeighborsAlways(pos.up(), this);
+            }
+        }
+    }
+
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        super.appendProperties(builder);
+        builder.add(POWERED);
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
+        tooltip.add(new TranslatableText("transportables.telesender_rail.tooltip_01"));
+        tooltip.add(new TranslatableText("transportables.telesender_rail.tooltip_02"));
+
+        super.appendTooltip(stack, world, tooltip, options);
     }
 }

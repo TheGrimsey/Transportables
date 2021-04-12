@@ -2,9 +2,7 @@ package net.thegrimsey.transportables.blocks.entity;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.math.BlockPos;
 import net.thegrimsey.transportables.TransportablesBlocks;
 
 public class TeleSender_RailEntity extends BlockEntity {
@@ -49,12 +47,6 @@ public class TeleSender_RailEntity extends BlockEntity {
         super.fromTag(state, tag);
 
         if(tag.contains("X"))
-        {
-            System.out.println("TeleSender loaded with coords");
-            x = tag.getInt("X");
-            y = tag.getInt("Y");
-            z = tag.getInt("Z");
-            destinationSet = true;
-        }
+            setDestination(tag.getInt("X"), tag.getInt("Y"), tag.getInt("Z"));
     }
 }

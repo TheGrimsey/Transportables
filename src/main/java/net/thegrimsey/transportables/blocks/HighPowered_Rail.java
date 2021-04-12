@@ -3,18 +3,26 @@ package net.thegrimsey.transportables.blocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.enums.RailShape;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.state.property.Property;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.thegrimsey.transportables.mixin.MinecartEntityAccessor;
 import net.thegrimsey.transportables.util.MinecartUtil;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.List;
 
 public class HighPowered_Rail extends AbstractActionRail {
     public static final int MAX_POWER_SPREAD_DISTANCE = 8;
@@ -166,5 +174,12 @@ public class HighPowered_Rail extends AbstractActionRail {
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         super.appendProperties(builder);
         builder.add(POWERED);
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
+        tooltip.add(new TranslatableText("transportables.highpowered_rail.tooltip_01"));
+
+        super.appendTooltip(stack, world, tooltip, options);
     }
 }

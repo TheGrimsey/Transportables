@@ -1,28 +1,30 @@
 package net.thegrimsey.transportables.blocks;
 
-import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.enums.RailShape;
+import net.minecraft.client.item.TooltipContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
-import net.minecraft.state.property.Property;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
-public class Launching_Rail extends AbstractRailBlock {
-    public static final Property<RailShape> SHAPE;
-    public static final BooleanProperty POWERED;
+import java.util.List;
+
+public class Launching_Rail extends AbstractActionRail {
+    public static final BooleanProperty POWERED = Properties.POWERED;
+
+    public static final double VERTICAL_VELOCITY = 1D;
 
     public Launching_Rail(Settings settings) {
         super(true, settings);
         this.setDefaultState(this.stateManager.getDefaultState().with(SHAPE, RailShape.NORTH_SOUTH).with(POWERED, false));
-    }
-
-    @Override
-    public Property<RailShape> getShapeProperty() {
-        return SHAPE;
     }
 
     protected void updateBlockState(BlockState state, World world, BlockPos pos, Block neighbor) {
@@ -38,11 +40,14 @@ public class Launching_Rail extends AbstractRailBlock {
     }
 
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(SHAPE, POWERED);
+        super.appendProperties(builder);
+        builder.add(POWERED);
     }
 
-    static {
-        SHAPE = Properties.STRAIGHT_RAIL_SHAPE;
-        POWERED = Properties.POWERED;
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
+        tooltip.add(new TranslatableText("transportables.launching_rail.tooltip_01"));
+
+        super.appendTooltip(stack, world, tooltip, options);
     }
 }

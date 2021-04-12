@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityClimbSpeedMixin {
+    @SuppressWarnings("ConstantConditions")
     @Inject(at = @At("TAIL"), method = "method_26318", cancellable = true)
     private void method_26318(Vec3d vec3d, float f, CallbackInfoReturnable<Vec3d> infoReturnable) {
         LivingEntity livingEntity = (LivingEntity) (Object) this;

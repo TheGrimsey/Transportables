@@ -31,22 +31,21 @@ public class TransportablesBlocks {
 
     public static void RegisterBlocks()
     {
-        RegisterBlock("highpowered_rail", HIGHPOWERED_RAIL, true);
-        RegisterBlock("launching_rail", LAUNCHING_RAIL, true);
-        RegisterBlock("telesender_rail", TELESENDER_RAIL, true);
+        RegisterBlock("highpowered_rail", HIGHPOWERED_RAIL);
+        RegisterBlock("launching_rail", LAUNCHING_RAIL);
+        RegisterBlock("telesender_rail", TELESENDER_RAIL);
 
-        RegisterBlock("iron_ladder", IRON_LADDER, true);
+        RegisterBlock("iron_ladder", IRON_LADDER);
 
         TELESENDER_RAILENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Transportables.MODID, "telesender_railentity"), BlockEntityType.Builder.create(TeleSender_RailEntity::new, TELESENDER_RAIL).build(null));
     }
 
-    private static void RegisterBlock(String Id, Block block, boolean cutOut)
+    private static void RegisterBlock(String Id, Block block)
     {
         Identifier identifier = new Identifier(Transportables.MODID, Id.toLowerCase());
         Registry.register(Registry.BLOCK, identifier, block);
         Registry.register(Registry.ITEM, identifier, new BlockItem(block, new FabricItemSettings().group(ItemGroup.TRANSPORTATION)));
 
-        if(cutOut)
-            BlockRenderLayerMap.INSTANCE.putBlock(block, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(block, RenderLayer.getCutout());
     }
 }

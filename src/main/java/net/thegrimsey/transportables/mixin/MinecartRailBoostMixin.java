@@ -5,8 +5,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.MovementType;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.util.math.BlockPos;
-import net.thegrimsey.transportables.TransportablesBlocks;
 import net.thegrimsey.transportables.blocks.AbstractActionRail;
+import net.thegrimsey.transportables.blocks.Launching_Rail;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.injection.At;
@@ -38,9 +38,12 @@ public abstract class MinecartRailBoostMixin {
 		AbstractMinecartEntity minecart = (AbstractMinecartEntity) (Object) this;
 		BlockState state = minecart.world.getBlockState(minecart.getBlockPos());
 
-		if (state.getBlock() == TransportablesBlocks.LAUNCHING_RAIL) {
-			minecart.setVelocity(minecart.getVelocity().x, 1D, minecart.getVelocity().z);
+		// LAUNCHING RAIl.
+		if (state.getBlock() instanceof Launching_Rail) {
+			// Apply vertical velocity.
+			minecart.setVelocity(minecart.getVelocity().x, Launching_Rail.VERTICAL_VELOCITY, minecart.getVelocity().z);
 		}
+
 		minecart.move(MovementType.SELF, minecart.getVelocity());
 		minecart.setVelocity(minecart.getVelocity().multiply(minecart.isOnGround() ? 0.5D : 0.95D));
 	}
