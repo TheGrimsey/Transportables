@@ -14,10 +14,12 @@
     "transportables.iron_ladder.tooltip_01": "§5Allows you to climb faster than a regular ladder.",
 
     "item.transportables.raillinker": "Rail-Linker",
-    "transportables.raillinker.savedposition": "Saved position (%d, %d, %d).",
-    "transportables.raillinker.updateddestination": "Teleport destination updated (%d, %d, %d).",
     "transportables.raillinker.tooltip_01": "Saved position: (%d, %d, %d)",
     "transportables.raillinker.tooltip_01_nodestination": "§oSaved position: (None)",
     "transportables.raillinker.tooltip_02": "§5Use on a rail to save it's position.",
-    "transportables.raillinker.tooltip_03": "§5Sneak + use on a tele-sender to update destination."
+    "transportables.raillinker.tooltip_03": "§5Sneak + use on a tele-sender to update destination.",
+
+    "transportables.raillinker.savedposition": "Saved position (%d, %d, %d).",
+    "transportables.raillinker.updateddestination": "Teleport destination updated (%d, %d, %d).",
+    "transportables.raillinker.outofrange": "Rail is too far away (%d blocks, max range is %d)"
 }

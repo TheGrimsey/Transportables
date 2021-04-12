@@ -12,8 +12,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.thegrimsey.transportables.Transportables;
 import net.thegrimsey.transportables.TransportablesBlocks;
+import net.thegrimsey.transportables.TransportablesConfig;
 import net.thegrimsey.transportables.blocks.entity.TeleSender_RailEntity;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,6 +41,16 @@ public class RailLinker extends Item {
                 int X = tag.getInt("X");
                 int Y = tag.getInt("Y");
                 int Z = tag.getInt("Z");
+
+                // Limit teleport distance.
+                double sqrDist = context.getBlockPos().getSquaredDistance(X,Y,Z, true);
+                int maxDistance = Transportables.CONFIG.TELESENDER_RANGE;
+                if(sqrDist > maxDistance * maxDistance)
+                {
+                    long distance = Math.round(MathHelper.sqrt(sqrDist));
+                    context.getPlayer().sendMessage(new TranslatableText("transportables.raillinker.outofrange", distance, maxDistance), true);
+                    return ActionResult.FAIL;
+                }
 
                 // Set rail's destination.
                 TeleSender_RailEntity railEntity = (TeleSender_RailEntity) context.getWorld().getBlockEntity(context.getBlockPos());
