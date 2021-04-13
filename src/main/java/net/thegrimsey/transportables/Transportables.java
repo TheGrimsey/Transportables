@@ -15,5 +15,6 @@ public class Transportables implements ModInitializer {
 
 		TransportablesBlocks.RegisterBlocks();
 		TransportablesItems.RegisterItems();
+		TransportablesEntities.RegisterEntities();
 	}
 }

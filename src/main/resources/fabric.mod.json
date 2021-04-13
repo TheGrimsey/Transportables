@@ -20,6 +20,9 @@
   "entrypoints": {
     "main": [
       "net.thegrimsey.transportables.Transportables"
+    ],
+    "client": [
+      "net.thegrimsey.transportables.TransportablesClient"
     ]
   },
   "mixins": [

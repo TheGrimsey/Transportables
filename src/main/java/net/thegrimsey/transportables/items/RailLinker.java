@@ -4,6 +4,9 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.passive.HorseEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -12,12 +15,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.thegrimsey.transportables.Transportables;
 import net.thegrimsey.transportables.TransportablesBlocks;
-import net.thegrimsey.transportables.TransportablesConfig;
 import net.thegrimsey.transportables.blocks.entity.TeleSender_RailEntity;
+import net.thegrimsey.transportables.entity.CarriageEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -81,6 +85,40 @@ public class RailLinker extends Item {
         }
 
         return super.useOnBlock(context);
+    }
+
+    @Override
+    public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
+        final String carriageKey = "LinkingCarriage";
+
+        if(entity instanceof HorseEntity) {
+            CompoundTag tag = stack.getOrCreateTag();
+            System.out.println(tag.toString());
+            if(tag.contains(carriageKey))
+            {
+                int carriageId = tag.getInt(carriageKey);
+
+                CarriageEntity carriageEntity = (CarriageEntity) entity.world.getEntityById(carriageId);
+                if(carriageEntity != null)
+                {
+                    carriageEntity.setCarriageHolder((HorseEntity) entity);
+
+                    user.sendMessage(Text.of("Success."), true);
+                    return ActionResult.SUCCESS;
+                }
+                user.sendMessage(Text.of("Fail: Entity Null."), true);
+            }
+            else
+                user.sendMessage(Text.of("Fail: Tag missing."), true);
+
+            return ActionResult.FAIL;
+        } else if (entity instanceof CarriageEntity) {
+            user.getStackInHand(hand).getOrCreateTag().putInt(carriageKey, entity.getEntityId());
+            user.sendMessage(Text.of("Link start: " + entity.getEntityId()), true);
+            return ActionResult.SUCCESS;
+        }
+
+        return super.useOnEntity(stack, user, entity, hand);
     }
 
     @Override
