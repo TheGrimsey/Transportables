@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -28,6 +29,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class RailLinker extends Item {
+    final String carriageKey = "LinkingCarriage";
+
     public RailLinker() {
         super(new FabricItemSettings().maxCount(1).group(ItemGroup.TRANSPORTATION));
     }
@@ -89,28 +92,22 @@ public class RailLinker extends Item {
 
     @Override
     public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
-        final String carriageKey = "LinkingCarriage";
 
         if(entity instanceof HorseEntity) {
-            CompoundTag tag = stack.getOrCreateTag();
-            System.out.println(tag.toString());
-            if(tag.contains(carriageKey))
+            CompoundTag tag = stack.getTag();
+            if(tag != null && tag.contains(carriageKey))
             {
                 int carriageId = tag.getInt(carriageKey);
 
-                CarriageEntity carriageEntity = (CarriageEntity) entity.world.getEntityById(carriageId);
-                if(carriageEntity != null)
+                Entity targetEntity = entity.world.getEntityById(carriageId);
+                if(targetEntity instanceof CarriageEntity)
                 {
-                    carriageEntity.setCarriageHolder((HorseEntity) entity);
+                    ((CarriageEntity) targetEntity).setCarriageHolder((HorseEntity) entity);
 
                     user.sendMessage(Text.of("Success."), true);
                     return ActionResult.SUCCESS;
                 }
-                user.sendMessage(Text.of("Fail: Entity Null."), true);
             }
-            else
-                user.sendMessage(Text.of("Fail: Tag missing."), true);
-
             return ActionResult.FAIL;
         } else if (entity instanceof CarriageEntity) {
             user.getStackInHand(hand).getOrCreateTag().putInt(carriageKey, entity.getEntityId());
@@ -121,11 +118,12 @@ public class RailLinker extends Item {
         return super.useOnEntity(stack, user, entity, hand);
     }
 
+
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         // Retrieve position for tooltip.
-        CompoundTag tag = stack.getOrCreateTag();
-        if(tag.contains("X"))
+        CompoundTag tag = stack.getTag();
+        if(tag != null && tag.contains("X"))
         {
             int x = tag.getInt("X");
             int y = tag.getInt("Y");

@@ -1,21 +1,18 @@
 package net.thegrimsey.transportables.entity;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Arm;
+import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.UUID;
 
 public class CarriageEntity extends LivingEntity {
@@ -24,7 +21,8 @@ public class CarriageEntity extends LivingEntity {
 
     UUID owner;
 
-    final float FOLLOW_DISTANCE = 3F;
+    final float FOLLOW_DISTANCE = 4F;
+    final int MAX_PASSENGERS = 4;
 
     public CarriageEntity(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
@@ -54,6 +52,13 @@ public class CarriageEntity extends LivingEntity {
         double yaw = Math.toDegrees(Math.atan2(delta.getY(), delta.x)) + 90D;
         boolean shouldMove = delta.lengthSquared() > FOLLOW_DISTANCE * FOLLOW_DISTANCE;
 
+        if(shouldMove)
+        {
+            double distanceToMove = delta.length() - FOLLOW_DISTANCE;
+
+            move(MovementType.SELF, delta.normalize().multiply(distanceToMove * -1D));
+        }
+
         setRotation((float) yaw, 0.f);
         setHeadYaw((float) yaw);
     }
@@ -62,6 +67,24 @@ public class CarriageEntity extends LivingEntity {
     public void tick() {
         super.tick();
         this.bodyYaw = yaw;
+    }
+
+    @Override
+    public ActionResult interact(PlayerEntity player, Hand hand) {
+
+        // Server
+        if(!this.world.isClient())
+        {
+            // Start riding.
+            return player.startRiding(this) ? ActionResult.SUCCESS : ActionResult.FAIL;
+        }
+
+        return super.interact(player, hand);
+    }
+
+    @Override
+    protected boolean canAddPassenger(Entity passenger) {
+        return getPassengerList().size() < MAX_PASSENGERS;
     }
 
     @Override
