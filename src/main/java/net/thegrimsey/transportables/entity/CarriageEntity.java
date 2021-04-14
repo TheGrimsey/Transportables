@@ -1,14 +1,19 @@
 package net.thegrimsey.transportables.entity;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.*;
 import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -21,11 +26,12 @@ public class CarriageEntity extends LivingEntity {
 
     UUID owner;
 
-    final float FOLLOW_DISTANCE = 4F;
+    final float FOLLOW_DISTANCE = 2.5F;
     final int MAX_PASSENGERS = 4;
 
     public CarriageEntity(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
+        this.stepHeight = 1F;
     }
 
     public void SetOwner(PlayerEntity player)
@@ -49,16 +55,18 @@ public class CarriageEntity extends LivingEntity {
             return;
 
         Vec3d delta = getPos().subtract(carriageHolder.getPos());
-        double yaw = Math.toDegrees(Math.atan2(delta.getY(), delta.x)) + 90D;
-        boolean shouldMove = delta.lengthSquared() > FOLLOW_DISTANCE * FOLLOW_DISTANCE;
 
+        // Only move when we are out of follow distance. This allows us to juist rotate if needed which looks NICE.
+        boolean shouldMove = delta.lengthSquared() > FOLLOW_DISTANCE * FOLLOW_DISTANCE;
         if(shouldMove)
         {
+            // We only want to move up to our follow distance.
             double distanceToMove = delta.length() - FOLLOW_DISTANCE;
 
             move(MovementType.SELF, delta.normalize().multiply(distanceToMove * -1D));
         }
 
+        double yaw = Math.toDegrees(Math.atan2(delta.z, delta.x)) + 90D;
         setRotation((float) yaw, 0.f);
         setHeadYaw((float) yaw);
     }
@@ -66,6 +74,17 @@ public class CarriageEntity extends LivingEntity {
     @Override
     public void tick() {
         super.tick();
+
+        // Allow horse rider to predict the movement of the carriage.
+        // This looks nicer most of the time. Still some issues with going up blocks.
+        if(this.world.isClient() && carriageHolder != null)
+        {
+            if(carriageHolder.getPrimaryPassenger() == MinecraftClient.getInstance().player)
+            {
+                tickNewAi();
+            }
+        }
+
         this.bodyYaw = yaw;
     }
 
@@ -85,6 +104,43 @@ public class CarriageEntity extends LivingEntity {
     @Override
     protected boolean canAddPassenger(Entity passenger) {
         return getPassengerList().size() < MAX_PASSENGERS;
+    }
+
+    @Override
+    public void updatePassengerPosition(Entity passenger) {
+        if (this.hasPassenger(passenger)) {
+            int i = this.getPassengerList().indexOf(passenger);
+            float x = 0.5F;
+            float z = -0.7F;
+            x -= (i / 2) * 1.2F;
+            z += (i % 2) * 1.3F;
+
+            Vec3d vec3d = (new Vec3d(x, 0.0D, z)).rotateY(-this.yaw * 0.017453292F - 1.5707964F);
+            passenger.updatePosition(this.getX() + vec3d.x, this.getY() + 0.1F, this.getZ() + vec3d.z);
+            copyEntityData(passenger);
+        }
+    }
+
+    @Environment(EnvType.CLIENT)
+    public void onPassengerLookAround(Entity entity) {
+        copyEntityData(entity);
+    }
+
+    private void copyEntityData(Entity entity) {
+        float rot = 90F * (getPassengerList().indexOf(entity) % 2 == 0 ? -1F : 1F);
+
+        entity.setYaw(this.yaw + rot);
+        float f = MathHelper.wrapDegrees(entity.yaw - this.yaw + rot);
+        float g = MathHelper.clamp(f, -89.9F, 89.9F);
+        entity.prevYaw += g - f;
+        entity.yaw += g - f;
+        entity.setHeadYaw(entity.yaw);
+    }
+
+    @Nullable
+    @Override
+    public Entity getPrimaryPassenger() {
+        return null;
     }
 
     @Override
