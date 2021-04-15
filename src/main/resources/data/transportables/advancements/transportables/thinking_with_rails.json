@@ -1,0 +1,34 @@
+{
+  "parent": "transportables:transportables/root",
+  "display": {
+    "icon": {
+      "item": "transportables:telesender_rail"
+    },
+    "title": {
+      "translate": "transportables.advancements.thinking_with_rails.title"
+    },
+    "description": {
+      "translate": "transportables.advancements.thinking_with_rails.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 85
+  },
+  "criteria": {
+    "place_telesender_rail": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "block": "transportables:telesender_rail"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "place_telesender_rail"
+    ]
+  ]
+}
