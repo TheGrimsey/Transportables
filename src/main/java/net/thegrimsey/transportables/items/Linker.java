@@ -28,10 +28,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Objects;
 
-public class RailLinker extends Item {
+public class Linker extends Item {
     final String carriageKey = "LinkingCarriage";
 
-    public RailLinker() {
+    public Linker() {
         super(new FabricItemSettings().maxCount(1).group(ItemGroup.TRANSPORTATION));
     }
 
@@ -55,7 +55,7 @@ public class RailLinker extends Item {
                 if(sqrDist > maxDistance * maxDistance)
                 {
                     long distance = Math.round(MathHelper.sqrt(sqrDist));
-                    context.getPlayer().sendMessage(new TranslatableText("transportables.raillinker.outofrange", distance, maxDistance), true);
+                    context.getPlayer().sendMessage(new TranslatableText("transportables.linker.outofrange", distance, maxDistance), true);
                     return ActionResult.FAIL;
                 }
 
@@ -67,7 +67,7 @@ public class RailLinker extends Item {
                 }
 
                 // Send "Updated destination" message.
-                context.getPlayer().sendMessage(new TranslatableText("transportables.raillinker.updateddestination", X, Y, Z), true);
+                context.getPlayer().sendMessage(new TranslatableText("transportables.linker.updateddestination", X, Y, Z), true);
                 return ActionResult.success(true);
             }
         }
@@ -82,7 +82,7 @@ public class RailLinker extends Item {
                 tag.putInt("Z", context.getBlockPos().getZ());
                 context.getStack().setTag(tag);
 
-                context.getPlayer().sendMessage(new TranslatableText("transportables.raillinker.savedposition", context.getBlockPos().getX(), context.getBlockPos().getY(), context.getBlockPos().getZ()), true);
+                context.getPlayer().sendMessage(new TranslatableText("transportables.linker.savedposition", context.getBlockPos().getX(), context.getBlockPos().getY(), context.getBlockPos().getZ()), true);
                 return ActionResult.success(true);
             }
         }
@@ -92,7 +92,6 @@ public class RailLinker extends Item {
 
     @Override
     public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
-
         if(entity instanceof HorseEntity) {
             CompoundTag tag = stack.getTag();
             if(tag != null && tag.contains(carriageKey))
@@ -102,16 +101,29 @@ public class RailLinker extends Item {
                 Entity targetEntity = entity.world.getEntityById(carriageId);
                 if(targetEntity instanceof CarriageEntity)
                 {
+                    // Limit link distance.
+                    double sqrDist = entity.getPos().squaredDistanceTo(targetEntity.getPos());
+                    int maxDistance = Transportables.CONFIG.CARRIAGE_LINK_RANGE;
+                    if(sqrDist > maxDistance * maxDistance)
+                    {
+                        long distance = Math.round(MathHelper.sqrt(sqrDist));
+                        user.sendMessage(new TranslatableText("transportables.linker.carriage_outofrange", distance, maxDistance), true);
+                        return ActionResult.FAIL;
+                    }
+
                     ((CarriageEntity) targetEntity).setCarriageHolder((HorseEntity) entity);
 
-                    user.sendMessage(Text.of("Success."), true);
+                    tag.remove(carriageKey);
+                    user.getStackInHand(hand).setTag(tag);
                     return ActionResult.SUCCESS;
                 }
             }
-            return ActionResult.FAIL;
+            return ActionResult.PASS;
         } else if (entity instanceof CarriageEntity) {
+            if(!user.isSneaking())
+                return ActionResult.PASS;
+
             user.getStackInHand(hand).getOrCreateTag().putInt(carriageKey, entity.getEntityId());
-            user.sendMessage(Text.of("Link start: " + entity.getEntityId()), true);
             return ActionResult.SUCCESS;
         }
 
@@ -128,15 +140,18 @@ public class RailLinker extends Item {
             int x = tag.getInt("X");
             int y = tag.getInt("Y");
             int z = tag.getInt("Z");
-            tooltip.add(new TranslatableText("transportables.raillinker.tooltip_01", x, y, z));
+            tooltip.add(new TranslatableText("transportables.linker.tooltip_01", x, y, z));
         }
         else
         {
-            tooltip.add(new TranslatableText("transportables.raillinker.tooltip_01_nodestination"));
+            tooltip.add(new TranslatableText("transportables.linker.tooltip_01_nodestination"));
         }
 
-        tooltip.add(new TranslatableText("transportables.raillinker.tooltip_02"));
-        tooltip.add(new TranslatableText("transportables.raillinker.tooltip_03"));
+        tooltip.add(new TranslatableText("transportables.linker.tooltip_02"));
+        tooltip.add(new TranslatableText("transportables.linker.tooltip_03"));
+        tooltip.add(new TranslatableText("transportables.linker.tooltip_04"));
+        tooltip.add(new TranslatableText("transportables.linker.tooltip_05"));
+        tooltip.add(new TranslatableText("transportables.linker.tooltip_06"));
         super.appendTooltip(stack, world, tooltip, context);
     }
 }

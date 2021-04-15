@@ -14,8 +14,8 @@ public class CarriageEntityModel extends EntityModel<CarriageEntity> {
 
     public CarriageEntityModel()
     {
-        this.textureHeight = 128;
-        this.textureWidth = 128;
+        this.textureHeight = 256;
+        this.textureWidth = 256;
 
         mainCart = new ModelPart(this);
         mainCart.setPivot(0.0F, 24.0F, 0.0F);
@@ -26,7 +26,7 @@ public class CarriageEntityModel extends EntityModel<CarriageEntity> {
 
         frontAxel = new ModelPart(this);
         frontAxel.setPivot(0.0F, 19.5F, -13.5F);
-        frontAxel.setTextureOffset(54, 46).addCuboid(-18.0F, -0.5F, -0.5F, 36.0F, 1.0F, 1.0F, 0.0F, false);
+        frontAxel.setTextureOffset(0, 130).addCuboid(-18.0F, -0.5F, -0.5F, 36.0F, 1.0F, 1.0F, 0.0F, false);
         frontAxel.setTextureOffset(112, 51).addCuboid(-19.0F, -3.5F, -3.5F, 1.0F, 7.0F, 7.0F, 0.0F, false);
         frontAxel.setTextureOffset(112, 66).addCuboid(-19.0F, -2.5F, 3.5F, 1.0F, 5.0F, 1.0F, 0.0F, false);
         frontAxel.setTextureOffset(116, 72).addCuboid(-19.0F, -4.5F, -2.5F, 1.0F, 1.0F, 5.0F, 0.0F, false);
@@ -36,11 +36,11 @@ public class CarriageEntityModel extends EntityModel<CarriageEntity> {
         frontAxel.setTextureOffset(112, 66).addCuboid(18.0F, -2.5F, 3.5F, 1.0F, 5.0F, 1.0F, 0.0F, true);
         frontAxel.setTextureOffset(116, 72).addCuboid(18.0F, -4.5F, -2.5F, 1.0F, 1.0F, 5.0F, 0.0F, true);
         frontAxel.setTextureOffset(116, 79).addCuboid(18.0F, 3.5F, -2.5F, 1.0F, 1.0F, 5.0F, 0.0F, true);
-        frontAxel.setTextureOffset(112, 66).addCuboid(18.0F, -2.5F, -4.5F, 1.0F, 5.0F, 1.0F, 0.0F, true);
+        frontAxel.setTextureOffset(116, 66).addCuboid(18.0F, -2.5F, -4.5F, 1.0F, 5.0F, 1.0F, 0.0F, true);
 
         backAxel = new ModelPart(this);
         backAxel.setPivot(0.0F, 19.5F, 14.5F);
-        backAxel.setTextureOffset(54, 46).addCuboid(-18.0F, -0.5F, -0.5F, 36.0F, 1.0F, 1.0F, 0.0F, false);
+        backAxel.setTextureOffset(0, 130).addCuboid(-18.0F, -0.5F, -0.5F, 36.0F, 1.0F, 1.0F, 0.0F, false);
         backAxel.setTextureOffset(112, 51).addCuboid(-19.0F, -3.5F, -3.5F, 1.0F, 7.0F, 7.0F, 0.0F, false);
         backAxel.setTextureOffset(112, 66).addCuboid(-19.0F, -2.5F, 3.5F, 1.0F, 5.0F, 1.0F, 0.0F, false);
         backAxel.setTextureOffset(116, 72).addCuboid(-19.0F, -4.5F, -2.5F, 1.0F, 1.0F, 5.0F, 0.0F, false);

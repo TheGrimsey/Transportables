@@ -8,4 +8,7 @@ import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 public class TransportablesConfig implements ConfigData {
     @Comment("Maximum teleport distance for TeleSender rail in blocks. (Integer: 0-2147483648. Default: 30)")
     public int TELESENDER_RANGE = 30;
+
+    @Comment("Maximum teleport distance for linking carriages. (Integer: 0-2147483648. Default: 6)")
+    public int CARRIAGE_LINK_RANGE = 6;
 }

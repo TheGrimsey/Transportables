@@ -4,9 +4,9 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.*;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.ActionResult;
@@ -18,6 +18,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class CarriageEntity extends LivingEntity {
@@ -32,6 +33,7 @@ public class CarriageEntity extends LivingEntity {
     public CarriageEntity(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
         this.stepHeight = 1F;
+        Objects.requireNonNull(getAttributeInstance(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE)).setBaseValue(0.95D);
     }
 
     public void SetOwner(PlayerEntity player)
@@ -56,7 +58,7 @@ public class CarriageEntity extends LivingEntity {
 
         Vec3d delta = getPos().subtract(carriageHolder.getPos());
 
-        // Only move when we are out of follow distance. This allows us to juist rotate if needed which looks NICE.
+        // Only move when we are out of follow distance. This allows us to just rotate if needed which looks NICE.
         boolean shouldMove = delta.lengthSquared() > FOLLOW_DISTANCE * FOLLOW_DISTANCE;
         if(shouldMove)
         {
@@ -110,10 +112,8 @@ public class CarriageEntity extends LivingEntity {
     public void updatePassengerPosition(Entity passenger) {
         if (this.hasPassenger(passenger)) {
             int i = this.getPassengerList().indexOf(passenger);
-            float x = 0.5F;
-            float z = -0.7F;
-            x -= (i / 2) * 1.2F;
-            z += (i % 2) * 1.3F;
+            float x = 0.5F - ((i / 2) * 1.2F);
+            float z = -0.7F + (i % 2) * 1.3F;
 
             Vec3d vec3d = (new Vec3d(x, 0.0D, z)).rotateY(-this.yaw * 0.017453292F - 1.5707964F);
             passenger.updatePosition(this.getX() + vec3d.x, this.getY() + 0.1F, this.getZ() + vec3d.z);

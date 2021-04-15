@@ -1,7 +1,7 @@
 {
     "display": {
       "icon": {
-        "item": "minecraft:map"
+        "item": "minecraft:minecart"
       },
       "title": {
         "translate": "transportables.advancements.root.title"
@@ -13,7 +13,7 @@
       "show_toast": false,
       "announce_to_chat": false,
       "hidden": false,
-      "background": "minecraft:textures/blocks/stone"
+      "background": "minecraft:textures/block/iron_block.png"
     },
     "criteria": {
       "unlock_iron": {

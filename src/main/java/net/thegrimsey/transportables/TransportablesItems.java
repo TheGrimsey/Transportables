@@ -3,14 +3,14 @@ package net.thegrimsey.transportables;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import net.thegrimsey.transportables.items.RailLinker;
+import net.thegrimsey.transportables.items.Linker;
 
 public class TransportablesItems {
-    public static final RailLinker RAILLINKER = new RailLinker();
+    public static final Linker LINKER = new Linker();
 
     public static void RegisterItems()
     {
-        RegisterItem("raillinker", RAILLINKER);
+        RegisterItem("linker", LINKER);
     }
 
     private static void RegisterItem(String Id, Item item)

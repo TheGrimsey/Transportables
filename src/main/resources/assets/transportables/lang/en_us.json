@@ -1,25 +1,42 @@
 {
     "block.transportables.highpowered_rail": "High-Powered Rail",
-    "transportables.highpowered_rail.tooltip_01": "§5When powered: Speeds up minecart to maxmimum speed.",
+    "transportables.highpowered_rail.tooltip_01": "§5§lWhen powered:§r§5 Speeds up minecart to maxmimum speed.",
 
     "block.transportables.launching_rail": "Launching Rail",
-    "transportables.launching_rail.tooltip_01": "§5When powered: Launches minecart into the air.",
+    "transportables.launching_rail.tooltip_01": "§5§lWhen powered:§r§5 Launches minecart into the air.",
 
     
     "block.transportables.telesender_rail": "Tele-Sender Rail",
-    "transportables.telesender_rail.tooltip_01": "§5When powered: Teleports minecart to set destination.",
+    "transportables.telesender_rail.tooltip_01": "§5§lWhen powered:§r§5 Teleports minecart to set destination.",
     "transportables.telesender_rail.tooltip_02": "§5Update destination using Rail-Linker.",
     
     "block.transportables.iron_ladder": "Iron Ladder",
     "transportables.iron_ladder.tooltip_01": "§5Allows you to climb faster than a regular ladder.",
 
-    "item.transportables.raillinker": "Rail-Linker",
-    "transportables.raillinker.tooltip_01": "Saved position: (%d, %d, %d)",
-    "transportables.raillinker.tooltip_01_nodestination": "§oSaved position: (None)",
-    "transportables.raillinker.tooltip_02": "§5Use on a rail to save it's position.",
-    "transportables.raillinker.tooltip_03": "§5Sneak + use on a tele-sender to update destination.",
+    "item.transportables.linker": "Linker",
+    "transportables.linker.tooltip_01": "§oSaved position: (%d, %d, %d)",
+    "transportables.linker.tooltip_01_nodestination": "§oSaved position: (None)",
+    "transportables.linker.tooltip_03": "§5Use on a rail to save it's position.",
+    "transportables.linker.tooltip_04": "§5Use on a tele-sender to update destination.",
+    "transportables.linker.tooltip_05": "§5§lWhilst sneaking:§r§5 Use on a carriage to start linking.",
+    "transportables.linker.tooltip_06": "§5§lWhilst linking to carriage:§r§5 Use on a horse to link.",
 
-    "transportables.raillinker.savedposition": "Saved position (%d, %d, %d).",
-    "transportables.raillinker.updateddestination": "Teleport destination updated (%d, %d, %d).",
-    "transportables.raillinker.outofrange": "Rail is too far away (%d blocks, max range is %d)"
+    "transportables.linker.savedposition": "Saved position (%d, %d, %d).",
+    "transportables.linker.updateddestination": "Teleport destination updated (%d, %d, %d).",
+    "transportables.linker.outofrange": "Rail is too far away (%d blocks, max range is %d)",
+    
+    "transportables.linker.carriage_outofrange": "Carriage is too far away (%d blocks, max range is %d)",
+
+    "transportables.advancements.root.title": "Transportables",
+    "transportables.advancements.root.description": "Rails and Carriages and Ladders, Oh My!",
+    "transportables.advancements.thinking_with_rails.title": "Thinking with rails",
+    "transportables.advancements.thinking_with_rails.description": "Place a TeleSender Rail.",
+    "transportables.advancements.aerial_faith_rail.title": "Aerial Faith Rail",
+    "transportables.advancements.aerial_faith_rail.description": "Place a Launching Rail.",
+    "transportables.advancements.eightyeight.title": "When this hits eighty-eight miles per hour...",
+    "transportables.advancements.eightyeight.description": "Place a highpowered rail.",
+    "transportables.advancements.isnt_it_iron_ladder.title": "Isn't it iron ladder?",
+    "transportables.advancements.isnt_it_iron_ladder.description": "Place an iron ladder.",
+
+    "entity.transportables.carriage": "Carriage"
 }
