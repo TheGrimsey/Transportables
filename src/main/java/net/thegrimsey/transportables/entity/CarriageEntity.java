@@ -16,6 +16,7 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.thegrimsey.transportables.TransportablesEntities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -30,9 +31,22 @@ public class CarriageEntity extends LivingEntity {
     final float FOLLOW_DISTANCE = 2.5F;
     final int MAX_PASSENGERS = 4;
 
+    public static CarriageEntity create(World world, double x, double y, double z)
+    {
+        CarriageEntity carriage = new CarriageEntity(TransportablesEntities.CARRIAGE, world);
+        carriage.updatePosition(x, y, z);
+        carriage.setVelocity(Vec3d.ZERO);
+        carriage.prevX = x;
+        carriage.prevY = y;
+        carriage.prevZ = z;
+
+        return carriage;
+    }
+
     public CarriageEntity(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
         this.stepHeight = 1F;
+        this.shouldRenderName()
         Objects.requireNonNull(getAttributeInstance(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE)).setBaseValue(0.95D);
     }
 

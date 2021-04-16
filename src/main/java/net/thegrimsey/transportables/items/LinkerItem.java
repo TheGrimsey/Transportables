@@ -28,10 +28,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Objects;
 
-public class Linker extends Item {
+public class LinkerItem extends Item {
     final String carriageKey = "LinkingCarriage";
 
-    public Linker() {
+    public LinkerItem() {
         super(new FabricItemSettings().maxCount(1).group(ItemGroup.TRANSPORTATION));
     }
 
