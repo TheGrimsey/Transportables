@@ -38,6 +38,6 @@
     "transportables.advancements.isnt_it_iron_ladder.title": "Isn't it iron ladder?",
     "transportables.advancements.isnt_it_iron_ladder.description": "Place an iron ladder.",
 
-    "entity.transportables.carriage": "Carriage"
+    "item.transportables.carriage": "Carriage"
     "entity.transportables.carriage": "Carriage"
 }
