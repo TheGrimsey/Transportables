@@ -20,8 +20,8 @@ public class CarriageItem extends Item {
             CarriageEntity carriage = CarriageEntity.create(context.getWorld(), context.getBlockPos().getX() + 0.5D, context.getBlockPos().getY() + 1.25D, context.getBlockPos().getZ() + 0.5D);
             if(context.getStack().hasCustomName())
                 carriage.setCustomName(context.getStack().getName());
-            context.getWorld().spawnEntity(carriage);
 
+            context.getWorld().spawnEntity(carriage);
             context.getStack().decrement(1);
         }
 

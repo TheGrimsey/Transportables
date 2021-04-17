@@ -1,5 +1,6 @@
 package net.thegrimsey.transportables;
 
+import net.minecraft.entity.vehicle.MinecartEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.MinecartItem;
 import net.minecraft.util.Identifier;

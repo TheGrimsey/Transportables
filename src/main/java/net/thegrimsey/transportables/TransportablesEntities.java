@@ -18,7 +18,5 @@ public class TransportablesEntities {
     {
         CARRIAGE = Registry.register(Registry.ENTITY_TYPE, new Identifier(Transportables.MODID, "carriage"), FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, CarriageEntity::new).dimensions(EntityDimensions.fixed(2.5f,1.5f)).build());
         FabricDefaultAttributeRegistry.register(CARRIAGE, CarriageEntity.createLivingAttributes());
-
-        CowEntity
     }
 }
