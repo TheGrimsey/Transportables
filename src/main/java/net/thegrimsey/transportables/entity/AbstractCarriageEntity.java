@@ -30,8 +30,11 @@ import java.util.UUID;
 public abstract class AbstractCarriageEntity extends LivingEntity {
     static final TrackedData<Optional<UUID>> CARRIAGE_HOLDER = DataTracker.registerData(CarriageEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
 
+    public static final EntityDimensions CARRIAGE_DIMENSIONS = EntityDimensions.fixed(2.5f,1.5f);
+
     final float FOLLOW_DISTANCE = 2.75F;
     final int MAX_PASSENGERS = 4;
+    final String CARRIAGE_HOLDER_KEY = "carriageHolder";
 
     @Nullable
     HorseBaseEntity carriageHolder = null;
@@ -58,6 +61,14 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
         if(carriageHolder != null) {
             if(!carriageHolder.isAlive())
                 removeCarriageHolder();
+        } else if(!this.world.isClient) // On the server if a UUID is set in dataTracker then update the carriage holder. Also acts as lazy load for saved from file.
+        {
+            Optional<UUID> holderId = this.dataTracker.get(CARRIAGE_HOLDER);
+            if(holderId.isPresent()) {
+                Entity carriageHolder = ((ServerWorld)this.world).getEntity(holderId.get());
+                if(carriageHolder instanceof HorseEntity)
+                    setCarriageHolder((HorseEntity) carriageHolder);
+            }
         }
 
         if(this.world.isClient)
@@ -68,7 +79,6 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
                 Entity playerVehicle = MinecraftClient.getInstance().player.getVehicle();
                 if(playerVehicle != null && playerVehicle.getUuid().equals(holderId.get())) {
                     carriageHolder = (HorseBaseEntity) playerVehicle;
-                    System.out.println("Riding it.");
                     tickCarriageMovement();
                 }
             }
@@ -144,29 +154,20 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
         entity.yaw += g - f;
     }
 
-
     @Override
-    public void fromTag(CompoundTag tag) {
-        super.fromTag(tag);
+    public void readCustomDataFromTag(CompoundTag tag) {
+        super.readCustomDataFromTag(tag);
 
-        if(tag.contains("carriageHolder"))
-        {
-            UUID carriageHolderId = tag.getUuid("carriageHolder");
-
-            Entity carriageHolder = ((ServerWorld)this.world).getEntity(carriageHolderId);
-            if(carriageHolder instanceof HorseEntity)
-                setCarriageHolder((HorseEntity) carriageHolder);
-        }
+        if(tag.contains(CARRIAGE_HOLDER_KEY))
+            this.dataTracker.set(CARRIAGE_HOLDER, Optional.of(tag.getUuid(CARRIAGE_HOLDER_KEY)));
     }
 
     @Override
-    public CompoundTag toTag(CompoundTag tag) {
-        super.toTag(tag);
+    public void writeCustomDataToTag(CompoundTag tag) {
+        super.writeCustomDataToTag(tag);
 
         if(carriageHolder != null)
-            tag.putUuid("carriageHolder", carriageHolder.getUuid());
-
-        return tag;
+            tag.putUuid(CARRIAGE_HOLDER_KEY, carriageHolder.getUuid());
     }
 
     @Override

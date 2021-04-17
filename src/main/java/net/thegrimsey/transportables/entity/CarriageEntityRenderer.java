@@ -6,9 +6,8 @@ import net.minecraft.util.Identifier;
 import net.thegrimsey.transportables.Transportables;
 
 public class CarriageEntityRenderer extends LivingEntityRenderer<CarriageEntity, CarriageEntityModel> {
-
     public CarriageEntityRenderer(EntityRenderDispatcher entityRenderDispatcher) {
-        super(entityRenderDispatcher, new CarriageEntityModel(), 1.5f);
+        super(entityRenderDispatcher, new CarriageEntityModel(), AbstractCarriageEntity.CARRIAGE_DIMENSIONS.width / 2F);
     }
 
     @Override

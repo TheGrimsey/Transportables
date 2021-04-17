@@ -27,7 +27,6 @@ import net.thegrimsey.transportables.blocks.entity.TeleSender_RailEntity;
 import net.thegrimsey.transportables.entity.CarriageEntity;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
