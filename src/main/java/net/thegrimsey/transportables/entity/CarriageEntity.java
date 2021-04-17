@@ -29,26 +29,6 @@ public class CarriageEntity extends AbstractCarriageEntity {
     }
 
     @Override
-    protected void tickNewAi() {
-        if(carriageHolder == null)
-            return;
-
-        Vec3d delta = getPos().subtract(carriageHolder.getPos());
-
-        // Only move when we are out of follow distance. This allows us to just rotate if needed which looks NICE.
-        boolean shouldMove = delta.lengthSquared() > FOLLOW_DISTANCE * FOLLOW_DISTANCE;
-        if(shouldMove)
-        {
-            // We only want to move up to our follow distance.
-            double distanceToMove = delta.length() - FOLLOW_DISTANCE;
-            move(MovementType.SELF, delta.normalize().multiply(distanceToMove * -1D));
-        }
-
-        double yaw = Math.toDegrees(Math.atan2(delta.z, delta.x)) + 90D;
-        setRotation((float) yaw, 0.f);
-    }
-
-    @Override
     protected void drop(DamageSource source) {
         if (this.world.getGameRules().getBoolean(GameRules.DO_MOB_LOOT)) {
             ItemStack drops = new ItemStack(TransportablesItems.CARRIAGE_ITEM);

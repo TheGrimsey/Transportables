@@ -6,6 +6,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.passive.HorseBaseEntity;
 import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -13,6 +14,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
@@ -25,8 +27,10 @@ import net.thegrimsey.transportables.blocks.entity.TeleSender_RailEntity;
 import net.thegrimsey.transportables.entity.CarriageEntity;
 import org.jetbrains.annotations.Nullable;
 
+import javax.swing.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 public class LinkerItem extends Item {
     final String carriageKey = "LinkingCarriage";
@@ -92,13 +96,16 @@ public class LinkerItem extends Item {
 
     @Override
     public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
-        if(entity instanceof HorseEntity) {
+        if(entity.world.isClient)
+            return ActionResult.PASS;
+
+        if(entity instanceof HorseBaseEntity) {
             CompoundTag tag = stack.getTag();
             if(tag != null && tag.contains(carriageKey))
             {
-                int carriageId = tag.getInt(carriageKey);
+                UUID carriageId = tag.getUuid(carriageKey);
 
-                Entity targetEntity = entity.world.getEntityById(carriageId);
+                Entity targetEntity = ((ServerWorld)entity.world).getEntity(carriageId);
                 if(targetEntity instanceof CarriageEntity)
                 {
                     // Limit link distance.
@@ -108,7 +115,7 @@ public class LinkerItem extends Item {
                     {
                         long distance = Math.round(MathHelper.sqrt(sqrDist));
                         user.sendMessage(new TranslatableText("transportables.linker.carriage_outofrange", distance, maxDistance), true);
-                        return ActionResult.FAIL;
+                        return ActionResult.SUCCESS;
                     }
 
                     ((CarriageEntity) targetEntity).setCarriageHolder((HorseEntity) entity);
@@ -123,11 +130,11 @@ public class LinkerItem extends Item {
             if(!user.isSneaking())
                 return ActionResult.PASS;
 
-            user.getStackInHand(hand).getOrCreateTag().putInt(carriageKey, entity.getEntityId());
+            user.getStackInHand(hand).getOrCreateTag().putUuid(carriageKey, entity.getUuid());
             return ActionResult.SUCCESS;
         }
 
-        return super.useOnEntity(stack, user, entity, hand);
+        return ActionResult.PASS;
     }
 
 

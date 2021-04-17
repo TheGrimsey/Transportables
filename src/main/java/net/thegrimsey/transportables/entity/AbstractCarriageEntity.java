@@ -2,14 +2,13 @@ package net.thegrimsey.transportables.entity;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.passive.HorseBaseEntity;
 import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -31,11 +30,11 @@ import java.util.UUID;
 public abstract class AbstractCarriageEntity extends LivingEntity {
     static final TrackedData<Optional<UUID>> CARRIAGE_HOLDER = DataTracker.registerData(CarriageEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
 
-    final float FOLLOW_DISTANCE = 2.5F;
+    final float FOLLOW_DISTANCE = 2.75F;
     final int MAX_PASSENGERS = 4;
 
     @Nullable
-    HorseEntity carriageHolder = null;
+    HorseBaseEntity carriageHolder = null;
 
     protected AbstractCarriageEntity(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
@@ -43,9 +42,63 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
         Objects.requireNonNull(getAttributeInstance(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE)).setBaseValue(0.95D);
     }
 
-    public void setCarriageHolder(HorseEntity carriageHolder) {
+    public void setCarriageHolder(HorseBaseEntity carriageHolder) {
         this.dataTracker.set(CARRIAGE_HOLDER, Optional.of(carriageHolder.getUuid()));
         this.carriageHolder = carriageHolder;
+    }
+    public void removeCarriageHolder() {
+        this.dataTracker.set(CARRIAGE_HOLDER, Optional.empty());
+        this.carriageHolder = null;
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+
+        if(carriageHolder != null) {
+            if(!carriageHolder.isAlive())
+                removeCarriageHolder();
+        }
+
+        if(this.world.isClient)
+        {
+            Optional<UUID> holderId = this.dataTracker.get(CARRIAGE_HOLDER);
+            if(holderId.isPresent())
+            {
+                Entity playerVehicle = MinecraftClient.getInstance().player.getVehicle();
+                if(playerVehicle != null && playerVehicle.getUuid().equals(holderId.get())) {
+                    carriageHolder = (HorseBaseEntity) playerVehicle;
+                    System.out.println("Riding it.");
+                    tickCarriageMovement();
+                }
+            }
+        }
+
+        this.bodyYaw = this.yaw;
+    }
+
+    @Override
+    protected void tickNewAi() {
+        tickCarriageMovement();
+    }
+
+    protected void tickCarriageMovement() {
+        if(carriageHolder == null)
+            return;
+
+        Vec3d delta = getPos().subtract(carriageHolder.getPos());
+
+        // Only move when we are out of follow distance. This allows us to just rotate if needed which looks NICE.
+        boolean shouldMove = delta.lengthSquared() > FOLLOW_DISTANCE * FOLLOW_DISTANCE;
+        if(shouldMove)
+        {
+            // We only want to move up to our follow distance.
+            double distanceToMove = delta.length() - FOLLOW_DISTANCE;
+            move(MovementType.SELF, delta.normalize().multiply(distanceToMove * -1D));
+        }
+
+        double yaw = Math.toDegrees(Math.atan2(delta.z, delta.x)) + 90D;
+        setRotation((float) yaw, 0.f);
     }
 
     @Override
@@ -90,6 +143,7 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
         entity.prevYaw += g - f;
         entity.yaw += g - f;
     }
+
 
     @Override
     public void fromTag(CompoundTag tag) {
