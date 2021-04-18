@@ -24,6 +24,9 @@
     "transportables.linker.savedposition": "Saved position (%d, %d, %d).",
     "transportables.linker.updateddestination": "Teleport destination updated (%d, %d, %d).",
     "transportables.linker.outofrange": "Rail is too far away (%d blocks, max range is %d)",
+    "transportables.linker.carriage_link_start": "Started linking carriage.",
+    "transportables.linker.carriage_linked": "Carriage linked successfully.",
+    "transportables.linker.carriage_unlink": "Carriage unlinked.",
     
     "transportables.linker.carriage_outofrange": "Carriage is too far away (%d blocks, max range is %d)",
 

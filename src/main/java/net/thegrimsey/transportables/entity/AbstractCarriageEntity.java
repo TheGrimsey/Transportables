@@ -1,5 +1,7 @@
 package net.thegrimsey.transportables.entity;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.UnmodifiableIterator;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -19,6 +21,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameRules;
@@ -53,6 +56,10 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
         Objects.requireNonNull(getAttributeInstance(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE)).setBaseValue(0.95D);
     }
 
+    public boolean HasCarriageHolder()
+    {
+        return this.dataTracker.get(CARRIAGE_HOLDER).isPresent();
+    }
     public void setCarriageHolder(HorseBaseEntity carriageHolder) {
         this.dataTracker.set(CARRIAGE_HOLDER, Optional.of(carriageHolder.getUuid()));
         this.carriageHolder = carriageHolder;
@@ -132,6 +139,9 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
     public void updatePassengerPosition(Entity passenger) {
         if (this.hasPassenger(passenger)) {
             int i = this.getPassengerList().indexOf(passenger);
+            // Math out so players are laid out in the corners of the entity.
+            // | 1   2 |
+            // | 3   4 |
             double x = 0.5F - ((i >> 1) * 1.2F);
             double z = -0.7F + (i % 2) * 1.3F;
 
@@ -165,6 +175,12 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
     @Override
     protected boolean canAddPassenger(Entity passenger) {
         return getPassengerList().size() < MAX_PASSENGERS;
+    }
+
+    // Override so carriage won't get removed when rider logs out.
+    @Override
+    public boolean hasPlayerRider() {
+        return false;
     }
 
     @Override

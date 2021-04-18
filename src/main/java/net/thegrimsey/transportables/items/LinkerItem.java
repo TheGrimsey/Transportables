@@ -118,7 +118,8 @@ public class LinkerItem extends Item {
                         return ActionResult.SUCCESS;
                     }
 
-                    ((AbstractCarriageEntity) targetEntity).setCarriageHolder((HorseEntity) entity);
+                    ((AbstractCarriageEntity) targetEntity).setCarriageHolder((HorseBaseEntity) entity);
+                    user.sendMessage(new TranslatableText("transportables.linker.carriage_linked"), true);
 
                     tag.remove(carriageKey);
                     user.getStackInHand(hand).setTag(tag);
@@ -130,6 +131,15 @@ public class LinkerItem extends Item {
             if(!user.isSneaking())
                 return ActionResult.PASS;
 
+            AbstractCarriageEntity carriageEntity = (AbstractCarriageEntity) entity;
+            if(carriageEntity.HasCarriageHolder())
+            {
+                carriageEntity.removeCarriageHolder();
+                user.sendMessage(new TranslatableText("transportables.linker.carriage_unlink"), true);
+                return ActionResult.SUCCESS;
+            }
+
+            user.sendMessage(new TranslatableText("transportables.linker.carriage_link_start"), true);
             user.getStackInHand(hand).getOrCreateTag().putUuid(carriageKey, entity.getUuid());
             return ActionResult.SUCCESS;
         }

@@ -8,6 +8,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+/*
+*   Mixin for climb speed on IronLadders.
+ */
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityClimbSpeedMixin {
     @SuppressWarnings("ConstantConditions")
