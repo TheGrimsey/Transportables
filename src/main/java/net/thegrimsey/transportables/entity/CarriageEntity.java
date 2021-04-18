@@ -2,13 +2,9 @@ package net.thegrimsey.transportables.entity;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.thegrimsey.transportables.TransportablesEntities;
-import net.thegrimsey.transportables.TransportablesItems;
 
 public class CarriageEntity extends AbstractCarriageEntity {
     public static CarriageEntity create(World world, double x, double y, double z, float yaw)

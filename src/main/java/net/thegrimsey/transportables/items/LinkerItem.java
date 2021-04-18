@@ -7,7 +7,6 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.HorseBaseEntity;
-import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -25,7 +24,6 @@ import net.thegrimsey.transportables.Transportables;
 import net.thegrimsey.transportables.TransportablesBlocks;
 import net.thegrimsey.transportables.blocks.entity.TeleSender_RailEntity;
 import net.thegrimsey.transportables.entity.AbstractCarriageEntity;
-import net.thegrimsey.transportables.entity.CarriageEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;

@@ -11,6 +11,11 @@ public class ChestCarriageEntityRenderer extends LivingEntityRenderer<ChestCarri
     }
 
     @Override
+    protected boolean hasLabel(ChestCarriageEntity carriageEntity) {
+        return super.hasLabel(carriageEntity) && (carriageEntity.shouldRenderName() || carriageEntity.hasCustomName() && carriageEntity == this.dispatcher.targetedEntity);
+    }
+
+    @Override
     public Identifier getTexture(ChestCarriageEntity entity) {
         return new Identifier(Transportables.MODID, "textures/entity/carriage.png");
     }

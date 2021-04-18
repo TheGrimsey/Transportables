@@ -22,10 +22,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.thegrimsey.transportables.TransportablesEntities;
-import net.thegrimsey.transportables.TransportablesItems;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
 import java.util.Iterator;
 
 public class ChestCarriageEntity extends AbstractCarriageEntity implements Inventory, NamedScreenHandlerFactory {
@@ -113,9 +111,15 @@ public class ChestCarriageEntity extends AbstractCarriageEntity implements Inven
 
     @Override
     public ActionResult interact(PlayerEntity player, Hand hand) {
+        ItemStack handStack = player.getStackInHand(hand);
+        if(!handStack.isEmpty())
+        {
+            ActionResult result =  handStack.useOnEntity(player, this, hand);
+            if(result.isAccepted())
+                return result;
+        }
+
         if(player.isSneaking()) {
-            if(player.getMainHandStack().getItem() == TransportablesItems.LINKER_ITEM)
-                return ActionResult.PASS;
             player.openHandledScreen(this);
             return ActionResult.SUCCESS;
         }
