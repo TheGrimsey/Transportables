@@ -10,13 +10,13 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.world.World;
-import net.thegrimsey.transportables.entity.CarriageEntity;
+import net.thegrimsey.transportables.entity.ChestCarriageEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class CarriageItem extends Item {
-    public CarriageItem() {
+public class ChestCarriageItem  extends Item {
+    public ChestCarriageItem() {
         super(new FabricItemSettings().maxCount(1).group(ItemGroup.TRANSPORTATION));
     }
 
@@ -25,7 +25,7 @@ public class CarriageItem extends Item {
 
         if(!context.getWorld().isClient())
         {
-            CarriageEntity carriage = CarriageEntity.create(context.getWorld(), context.getBlockPos().getX() + 0.5D, context.getBlockPos().getY() + 1.25D, context.getBlockPos().getZ() + 0.5D, context.getPlayerYaw());
+            ChestCarriageEntity carriage = ChestCarriageEntity.create(context.getWorld(), context.getBlockPos().getX() + 0.5D, context.getBlockPos().getY() + 1.25D, context.getBlockPos().getZ() + 0.5D, context.getPlayerYaw());
             if(context.getStack().hasCustomName())
                 carriage.setCustomName(context.getStack().getName());
 
@@ -38,8 +38,9 @@ public class CarriageItem extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        tooltip.add(new TranslatableText("transportables.carriage.tooltip_01"));
-        tooltip.add(new TranslatableText("transportables.carriage.tooltip_02"));
+        tooltip.add(new TranslatableText("transportables.chest_carriage.tooltip_01"));
+        tooltip.add(new TranslatableText("transportables.chest_carriage.tooltip_02"));
+        tooltip.add(new TranslatableText("transportables.chest_carriage.tooltip_03"));
         super.appendTooltip(stack, world, tooltip, context);
     }
 }

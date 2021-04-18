@@ -39,5 +39,13 @@
     "transportables.advancements.isnt_it_iron_ladder.description": "Place an iron ladder.",
 
     "item.transportables.carriage": "Carriage",
-    "entity.transportables.carriage": "Carriage"
+    "entity.transportables.carriage": "Carriage",
+    "transportables.carriage.tooltip_01": "§5A carriage that can be dragged behind a donkey or horse.",
+    "transportables.carriage.tooltip_02": "§5§lSeats up to 4 players.",
+
+    "item.transportables.chest_carriage": "Storage Carriage",
+    "entity.transportables.chest_carriage": "Storage Carriage",
+    "transportables.chest_carriage.tooltip_01": "§5A carriage that can be dragged behind a donkey or horse.",
+    "transportables.chest_carriage.tooltip_02": "§5Equipped with a double chest for storage.",
+    "transportables.chest_carriage.tooltip_03": "§5§lSeats up to 2 players."
 }

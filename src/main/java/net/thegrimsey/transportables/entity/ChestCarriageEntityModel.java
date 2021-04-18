@@ -23,6 +23,8 @@ public class ChestCarriageEntityModel extends EntityModel<ChestCarriageEntity> {
         mainCart.setTextureOffset(0, 44).addCuboid(-18.0F, -20.0F, -20.0F, 2.0F, 14.0F, 40.0F, 0.0F, true);
         mainCart.setTextureOffset(0, 44).addCuboid(16.0F, -20.0F, -20.0F, 2.0F, 14.0F, 40.0F, 0.0F, false);
         mainCart.setTextureOffset(0, 112).addCuboid(-16.0F, -20.0F, -20.0F, 32.0F, 14.0F, 2.0F, 0.0F, false);
+        mainCart.setTextureOffset(168, 0).addCuboid(-15.0F, -22.0F, -18.0F, 30.0F, 14.0F, 14.0F, 0.0F, false);
+        mainCart.setTextureOffset(249, 29).addCuboid(-1.0F, -19.0F, -4.0F, 2.0F, 4.0F, 1.0F, 0.0F, false);
 
         frontAxel = new ModelPart(this);
         frontAxel.setPivot(0.0F, 19.5F, -13.5F);

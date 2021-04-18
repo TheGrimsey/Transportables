@@ -5,6 +5,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -20,7 +21,9 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import net.thegrimsey.transportables.TransportablesItems;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -34,6 +37,7 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
 
     final float FOLLOW_DISTANCE = 2.75F;
     final int MAX_PASSENGERS = 4;
+    final float SEATING_Y_OFFSET = 0.1F;
     final String CARRIAGE_HOLDER_KEY = "carriageHolder";
 
     @Nullable
@@ -134,7 +138,7 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
             double rX = x * f + z * g;
             double rZ = z * f - x * g;
 
-            passenger.updatePosition(this.getX() + rX, this.getY() + 0.1F, this.getZ() + rZ);
+            passenger.updatePosition(this.getX() + rX, this.getY() + SEATING_Y_OFFSET, this.getZ() + rZ);
             updatePassengerRotation(passenger);
         }
     }
@@ -144,7 +148,7 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
         updatePassengerRotation(entity);
     }
 
-    private void updatePassengerRotation(Entity entity) {
+    protected void updatePassengerRotation(Entity entity) {
         float rot = 90F * (getPassengerList().indexOf(entity) % 2 == 0 ? -1F : 1F);
 
         entity.setYaw(this.yaw + rot);
@@ -152,6 +156,11 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
         float g = MathHelper.clamp(f, -89.9F, 89.9F);
         entity.prevYaw += g - f;
         entity.yaw += g - f;
+    }
+
+    @Override
+    protected boolean canAddPassenger(Entity passenger) {
+        return getPassengerList().size() < MAX_PASSENGERS;
     }
 
     @Override
@@ -176,10 +185,6 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
         this.dataTracker.startTracking(CARRIAGE_HOLDER, Optional.empty());
     }
 
-    @Override
-    protected boolean canAddPassenger(Entity passenger) {
-        return getPassengerList().size() < MAX_PASSENGERS;
-    }
 
     @Override
     public Iterable<ItemStack> getArmorItems() { return DefaultedList.of(); }
@@ -189,4 +194,15 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
     public void equipStack(EquipmentSlot slot, ItemStack stack) { }
     @Override
     public Arm getMainArm() { return Arm.LEFT; }
+
+    @Override
+    protected void drop(DamageSource source) {
+        if (this.world.getGameRules().getBoolean(GameRules.DO_MOB_LOOT)) {
+            ItemStack drops = new ItemStack(TransportablesItems.CARRIAGE_ITEM);
+            if(this.hasCustomName())
+                drops.setCustomName(this.getCustomName());
+
+            this.dropStack(drops);
+        }
+    }
 }

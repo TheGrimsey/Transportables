@@ -24,6 +24,7 @@ import net.minecraft.world.World;
 import net.thegrimsey.transportables.Transportables;
 import net.thegrimsey.transportables.TransportablesBlocks;
 import net.thegrimsey.transportables.blocks.entity.TeleSender_RailEntity;
+import net.thegrimsey.transportables.entity.AbstractCarriageEntity;
 import net.thegrimsey.transportables.entity.CarriageEntity;
 import org.jetbrains.annotations.Nullable;
 
@@ -105,7 +106,7 @@ public class LinkerItem extends Item {
                 UUID carriageId = tag.getUuid(carriageKey);
 
                 Entity targetEntity = ((ServerWorld)entity.world).getEntity(carriageId);
-                if(targetEntity instanceof CarriageEntity)
+                if(targetEntity instanceof AbstractCarriageEntity)
                 {
                     // Limit link distance.
                     double sqrDist = entity.getPos().squaredDistanceTo(targetEntity.getPos());
@@ -117,7 +118,7 @@ public class LinkerItem extends Item {
                         return ActionResult.SUCCESS;
                     }
 
-                    ((CarriageEntity) targetEntity).setCarriageHolder((HorseEntity) entity);
+                    ((AbstractCarriageEntity) targetEntity).setCarriageHolder((HorseEntity) entity);
 
                     tag.remove(carriageKey);
                     user.getStackInHand(hand).setTag(tag);
@@ -125,7 +126,7 @@ public class LinkerItem extends Item {
                 }
             }
             return ActionResult.PASS;
-        } else if (entity instanceof CarriageEntity) {
+        } else if (entity instanceof AbstractCarriageEntity) {
             if(!user.isSneaking())
                 return ActionResult.PASS;
 

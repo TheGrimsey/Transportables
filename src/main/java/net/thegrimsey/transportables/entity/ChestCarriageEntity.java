@@ -1,7 +1,10 @@
 package net.thegrimsey.transportables.entity;
 
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
@@ -14,16 +17,36 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import net.thegrimsey.transportables.TransportablesEntities;
 import net.thegrimsey.transportables.TransportablesItems;
 import org.jetbrains.annotations.Nullable;
 
+import javax.swing.*;
 import java.util.Iterator;
 
 public class ChestCarriageEntity extends AbstractCarriageEntity implements Inventory, NamedScreenHandlerFactory {
     private DefaultedList<ItemStack> inventory;
 
     final float REACH_DISTANCE = 5F;
+    final int MAX_PASSENGERS = 2;
+
+    public static ChestCarriageEntity create(World world, double x, double y, double z, float yaw)
+    {
+        ChestCarriageEntity carriage = new ChestCarriageEntity(TransportablesEntities.CHEST_CARRIAGE, world);
+        carriage.updatePosition(x, y, z);
+        carriage.setVelocity(Vec3d.ZERO);
+        carriage.prevX = x;
+        carriage.prevY = y;
+        carriage.prevZ = z;
+
+        carriage.yaw = yaw;
+
+        return carriage;
+    }
 
     public ChestCarriageEntity(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
@@ -90,12 +113,38 @@ public class ChestCarriageEntity extends AbstractCarriageEntity implements Inven
 
     @Override
     public ActionResult interact(PlayerEntity player, Hand hand) {
-        if(player.isSneaking() && player.getMainHandStack().getItem() != TransportablesItems.LINKER_ITEM) {
+        if(player.isSneaking()) {
+            if(player.getMainHandStack().getItem() == TransportablesItems.LINKER_ITEM)
+                return ActionResult.PASS;
             player.openHandledScreen(this);
             return ActionResult.SUCCESS;
         }
 
         return super.interact(player, hand);
+    }
+
+    @Override
+    public void updatePassengerPosition(Entity passenger) {
+        if (this.hasPassenger(passenger)) {
+            int i = this.getPassengerList().indexOf(passenger);
+            double x = -0.7F;
+            double z = -0.7F + (i % 2) * 1.3F;
+
+            // Rotate position
+            float angle = -this.yaw * 0.017453292F - 1.5707964F;
+            double f = MathHelper.cos(angle);
+            double g = MathHelper.sin(angle);
+            double rX = x * f + z * g;
+            double rZ = z * f - x * g;
+
+            passenger.updatePosition(this.getX() + rX, this.getY() + SEATING_Y_OFFSET, this.getZ() + rZ);
+            updatePassengerRotation(passenger);
+        }
+    }
+
+    @Override
+    protected boolean canAddPassenger(Entity passenger) {
+        return getPassengerList().size() < MAX_PASSENGERS;
     }
 
     @Nullable
@@ -120,5 +169,20 @@ public class ChestCarriageEntity extends AbstractCarriageEntity implements Inven
         super.readCustomDataFromTag(tag);
 
         Inventories.fromTag(tag, this.inventory);
+    }
+
+    @Override
+    protected void drop(DamageSource source) {
+        super.drop(source);
+
+        if (this.world.getGameRules().getBoolean(GameRules.DO_MOB_LOOT)) {
+            // Drop chest.
+            dropStack(new ItemStack(Blocks.CHEST, 2));
+
+            // Drop inventory.
+            for (ItemStack itemStack : this.inventory) {
+                dropStack(itemStack);
+            }
+        }
     }
 }

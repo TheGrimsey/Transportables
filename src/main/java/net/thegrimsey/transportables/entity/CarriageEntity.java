@@ -11,7 +11,7 @@ import net.thegrimsey.transportables.TransportablesEntities;
 import net.thegrimsey.transportables.TransportablesItems;
 
 public class CarriageEntity extends AbstractCarriageEntity {
-    public static CarriageEntity create(World world, double x, double y, double z)
+    public static CarriageEntity create(World world, double x, double y, double z, float yaw)
     {
         CarriageEntity carriage = new CarriageEntity(TransportablesEntities.CARRIAGE, world);
         carriage.updatePosition(x, y, z);
@@ -20,21 +20,12 @@ public class CarriageEntity extends AbstractCarriageEntity {
         carriage.prevY = y;
         carriage.prevZ = z;
 
+        carriage.yaw = yaw;
+
         return carriage;
     }
 
     public CarriageEntity(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
-    }
-
-    @Override
-    protected void drop(DamageSource source) {
-        if (this.world.getGameRules().getBoolean(GameRules.DO_MOB_LOOT)) {
-            ItemStack drops = new ItemStack(TransportablesItems.CARRIAGE_ITEM);
-            if(this.hasCustomName())
-                drops.setCustomName(this.getCustomName());
-
-            this.dropStack(drops);
-        }
     }
 }
