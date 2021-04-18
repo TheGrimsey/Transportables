@@ -158,7 +158,6 @@ public class LinkerItem extends Item {
         tooltip.add(new TranslatableText("transportables.linker.tooltip_03"));
         tooltip.add(new TranslatableText("transportables.linker.tooltip_04"));
         tooltip.add(new TranslatableText("transportables.linker.tooltip_05"));
-        tooltip.add(new TranslatableText("transportables.linker.tooltip_06"));
         super.appendTooltip(stack, world, tooltip, context);
     }
 }

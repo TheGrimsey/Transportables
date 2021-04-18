@@ -35,9 +35,13 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
 
     public static final EntityDimensions CARRIAGE_DIMENSIONS = EntityDimensions.fixed(2.5f,1.5f);
 
+    // Distance at which the cart should follow behind the holder.
     final float FOLLOW_DISTANCE = 2.75F;
+    // Max passengers in a cart.
     final int MAX_PASSENGERS = 4;
+    // Vertical offset for passenger seating.
     final float SEATING_Y_OFFSET = 0.1F;
+    // Carriageholder key for dataTracker.
     final String CARRIAGE_HOLDER_KEY = "carriageHolder";
 
     @Nullable
