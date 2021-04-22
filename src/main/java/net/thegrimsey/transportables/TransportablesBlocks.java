@@ -1,8 +1,11 @@
 package net.thegrimsey.transportables;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntityType;
@@ -46,6 +49,14 @@ public class TransportablesBlocks {
         Registry.register(Registry.BLOCK, identifier, block);
         Registry.register(Registry.ITEM, identifier, new BlockItem(block, new FabricItemSettings().group(ItemGroup.TRANSPORTATION)));
 
+        if(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT)
+            RegisterBlockRenderLayerMap(block);
+    }
+
+    @Environment(EnvType.CLIENT)
+    private static void RegisterBlockRenderLayerMap(Block block)
+    {
         BlockRenderLayerMap.INSTANCE.putBlock(block, RenderLayer.getCutout());
+
     }
 }
