@@ -10,7 +10,7 @@ public class CarriageEntity extends AbstractCarriageEntity {
     public static CarriageEntity create(World world, double x, double y, double z, float yaw)
     {
         CarriageEntity carriage = new CarriageEntity(TransportablesEntities.CARRIAGE, world);
-        carriage.updatePosition(x, y, z);
+        carriage.setPosition(x, y, z);
         carriage.setVelocity(Vec3d.ZERO);
         carriage.prevX = x;
         carriage.prevY = y;

@@ -10,7 +10,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
@@ -35,7 +35,7 @@ public class ChestCarriageEntity extends AbstractCarriageEntity implements Inven
     public static ChestCarriageEntity create(World world, double x, double y, double z, float yaw)
     {
         ChestCarriageEntity carriage = new ChestCarriageEntity(TransportablesEntities.CHEST_CARRIAGE, world);
-        carriage.updatePosition(x, y, z);
+        carriage.setPosition(x, y, z);
         carriage.setVelocity(Vec3d.ZERO);
         carriage.prevX = x;
         carriage.prevY = y;
@@ -141,7 +141,7 @@ public class ChestCarriageEntity extends AbstractCarriageEntity implements Inven
             double rX = x * f + z * g;
             double rZ = z * f - x * g;
 
-            passenger.updatePosition(this.getX() + rX, this.getY() + SEATING_Y_OFFSET, this.getZ() + rZ);
+            passenger.setPosition(this.getX() + rX, this.getY() + SEATING_Y_OFFSET, this.getZ() + rZ);
             updatePassengerRotation(passenger);
         }
     }
@@ -162,17 +162,17 @@ public class ChestCarriageEntity extends AbstractCarriageEntity implements Inven
     }
 
     @Override
-    public void writeCustomDataToTag(CompoundTag tag) {
-        super.writeCustomDataToTag(tag);
+    public void writeCustomDataToNbt(NbtCompound tag) {
+        super.writeCustomDataToNbt(tag);
 
-        Inventories.toTag(tag, this.inventory);
+        Inventories.writeNbt(tag, this.inventory);
     }
 
     @Override
-    public void readCustomDataFromTag(CompoundTag tag) {
-        super.readCustomDataFromTag(tag);
+    public void readCustomDataFromNbt(NbtCompound tag) {
+        super.readCustomDataFromNbt(tag);
 
-        Inventories.fromTag(tag, this.inventory);
+        Inventories.readNbt(tag, this.inventory);
     }
 
     @Override

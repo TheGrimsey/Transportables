@@ -12,7 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -46,7 +46,7 @@ public class LinkerItem extends Item {
             if(hitBlockState.getBlock() == TransportablesBlocks.TELESENDER_RAIL)
             {
                 // Get position from NBT data.
-                CompoundTag tag = context.getStack().getOrCreateTag();
+                NbtCompound tag = context.getStack().getOrCreateTag();
                 int X = tag.getInt("X");
                 int Y = tag.getInt("Y");
                 int Z = tag.getInt("Z");
@@ -78,7 +78,7 @@ public class LinkerItem extends Item {
             // Save position of rail.
             if(hitBlockState.getBlock() instanceof AbstractRailBlock)
             {
-                CompoundTag tag = context.getStack().getOrCreateTag();
+                NbtCompound tag = context.getStack().getOrCreateTag();
                 tag.putInt("X", context.getBlockPos().getX());
                 tag.putInt("Y", context.getBlockPos().getY());
                 tag.putInt("Z", context.getBlockPos().getZ());
@@ -98,7 +98,7 @@ public class LinkerItem extends Item {
             return ActionResult.PASS;
 
         if(entity instanceof HorseBaseEntity) {
-            CompoundTag tag = stack.getTag();
+            NbtCompound tag = stack.getTag();
             if(tag != null && tag.contains(carriageKey))
             {
                 UUID carriageId = tag.getUuid(carriageKey);
@@ -149,7 +149,7 @@ public class LinkerItem extends Item {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         // Retrieve position for tooltip.
-        CompoundTag tag = stack.getTag();
+        NbtCompound tag = stack.getTag();
         if(tag != null && tag.contains("X"))
         {
             int x = tag.getInt("X");

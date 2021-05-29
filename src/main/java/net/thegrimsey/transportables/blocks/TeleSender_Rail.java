@@ -1,6 +1,5 @@
 package net.thegrimsey.transportables.blocks;
 
-import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
@@ -38,15 +37,15 @@ public class TeleSender_Rail extends AbstractActionRail implements BlockEntityPr
             return;
 
         // Move minecart. Not using teleport because of problems with passengers.
-        minecart.refreshPositionAndAngles(blockEntity.getDestinationX() + 0.5D, blockEntity.getDestinationY(), blockEntity.getDestinationZ() + 0.5D, minecart.yaw, minecart.pitch);
+        minecart.refreshPositionAndAngles(blockEntity.getDestinationX() + 0.5D, blockEntity.getDestinationY(), blockEntity.getDestinationZ() + 0.5D, minecart.getYaw(), minecart.getPitch());
 
         info.cancel();
     }
 
     @Nullable
     @Override
-    public BlockEntity createBlockEntity(BlockView world) {
-        return new TeleSender_RailEntity();
+    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return new TeleSender_RailEntity(pos, state);
     }
 
     protected void updateBlockState(BlockState state, World world, BlockPos pos, Block neighbor) {

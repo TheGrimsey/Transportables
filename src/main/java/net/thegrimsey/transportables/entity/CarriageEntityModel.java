@@ -56,7 +56,7 @@ public class CarriageEntityModel extends EntityModel<CarriageEntity> {
     @Override
     public void setAngles(CarriageEntity entity, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch) {
         final float circumference = (7*4);
-        Vec3d forwardMovement = entity.getVelocity().rotateY(-entity.pitch);
+        Vec3d forwardMovement = entity.getVelocity().rotateY(-entity.getPitch());
         float rot = (float) Math.toRadians((-forwardMovement.x / circumference) * 360F);
         frontAxel.pitch += rot;
         backAxel.pitch += rot;

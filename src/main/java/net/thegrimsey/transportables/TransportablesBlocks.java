@@ -22,7 +22,7 @@ import net.thegrimsey.transportables.blocks.TeleSender_Rail;
 import net.thegrimsey.transportables.blocks.entity.TeleSender_RailEntity;
 
 public class TransportablesBlocks {
-    public static final FabricBlockSettings RAIL_SETTINGS = FabricBlockSettings.of(Material.SUPPORTED).nonOpaque().noCollision().strength(0.7F).sounds(BlockSoundGroup.METAL);
+    public static final FabricBlockSettings RAIL_SETTINGS = FabricBlockSettings.of(Material.DECORATION).nonOpaque().noCollision().strength(0.7F).sounds(BlockSoundGroup.METAL);
     public static final HighPowered_Rail HIGHPOWERED_RAIL = new HighPowered_Rail(RAIL_SETTINGS);
     public static final Launching_Rail LAUNCHING_RAIL = new Launching_Rail(RAIL_SETTINGS);
     public static final TeleSender_Rail TELESENDER_RAIL = new TeleSender_Rail(RAIL_SETTINGS);

@@ -13,7 +13,7 @@ import net.minecraft.entity.passive.HorseBaseEntity;
 import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Arm;
@@ -149,7 +149,7 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
             double rX = x * f + z * g;
             double rZ = z * f - x * g;
 
-            passenger.updatePosition(this.getX() + rX, this.getY() + SEATING_Y_OFFSET, this.getZ() + rZ);
+            passenger.setPosition(this.getX() + rX, this.getY() + SEATING_Y_OFFSET, this.getZ() + rZ);
             updatePassengerRotation(passenger);
         }
     }
@@ -162,7 +162,7 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
     protected void updatePassengerRotation(Entity entity) {
         float rot = 90F * (getPassengerList().indexOf(entity) % 2 == 0 ? -1F : 1F);
 
-        entity.setYaw(this.yaw + rot);
+        entity.setBodyYaw(this.yaw + rot);
         float f = MathHelper.wrapDegrees(entity.yaw - this.yaw + rot);
         float g = MathHelper.clamp(f, -89.9F, 89.9F);
         entity.prevYaw += g - f;
@@ -181,16 +181,16 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
     }
 
     @Override
-    public void readCustomDataFromTag(CompoundTag tag) {
-        super.readCustomDataFromTag(tag);
+    public void readCustomDataFromNbt(NbtCompound tag) {
+        super.readCustomDataFromNbt(tag);
 
         if(tag.contains(CARRIAGE_HOLDER_KEY))
             this.dataTracker.set(CARRIAGE_HOLDER, Optional.of(tag.getUuid(CARRIAGE_HOLDER_KEY)));
     }
 
     @Override
-    public void writeCustomDataToTag(CompoundTag tag) {
-        super.writeCustomDataToTag(tag);
+    public void writeCustomDataToNbt(NbtCompound tag) {
+        super.writeCustomDataToNbt(tag);
 
         if(carriageHolder != null)
             tag.putUuid(CARRIAGE_HOLDER_KEY, carriageHolder.getUuid());

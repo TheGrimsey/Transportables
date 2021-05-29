@@ -4,7 +4,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.enums.RailShape;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
@@ -52,7 +51,7 @@ public class HighPowered_Rail extends AbstractActionRail {
 
         RailShape railShape = state.get(getShapeProperty());
         Vec3d velocity = minecart.getVelocity();
-        double speed = Math.sqrt(Entity.squaredHorizontalLength(velocity));
+        double speed = Math.sqrt(velocity.x * velocity.x + velocity.z * velocity.z);
 
         // If moving: Accelerate to full-speed in direction.
         if (speed > 0.01D) {
