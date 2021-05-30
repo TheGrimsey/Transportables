@@ -16,7 +16,7 @@ public class CarriageEntity extends AbstractCarriageEntity {
         carriage.prevY = y;
         carriage.prevZ = z;
 
-        carriage.yaw = yaw;
+        carriage.setYaw(yaw);
 
         return carriage;
     }

@@ -16,6 +16,7 @@ public abstract class AbstractActionRail extends AbstractRailBlock {
 
     protected AbstractActionRail(boolean allowCurves, Settings settings) {
         super(allowCurves, settings);
+        this.setDefaultState(this.stateManager.getDefaultState().with(SHAPE, RailShape.NORTH_SOUTH).with(WATERLOGGED, false));
     }
 
     @Override
@@ -28,6 +29,7 @@ public abstract class AbstractActionRail extends AbstractRailBlock {
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         super.appendProperties(builder);
+        builder.add(WATERLOGGED);
         builder.add(SHAPE);
     }
 }

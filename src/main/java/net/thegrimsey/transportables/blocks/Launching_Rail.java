@@ -24,7 +24,7 @@ public class Launching_Rail extends AbstractActionRail {
 
     public Launching_Rail(Settings settings) {
         super(true, settings);
-        this.setDefaultState(this.stateManager.getDefaultState().with(SHAPE, RailShape.NORTH_SOUTH).with(POWERED, false));
+        this.setDefaultState(this.stateManager.getDefaultState().with(POWERED, false));
     }
 
     protected void updateBlockState(BlockState state, World world, BlockPos pos, Block neighbor) {

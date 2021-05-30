@@ -5,6 +5,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
@@ -40,7 +41,7 @@ public class TransportablesBlocks {
 
         RegisterBlock("iron_ladder", IRON_LADDER);
 
-        TELESENDER_RAILENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Transportables.MODID, "telesender_railentity"), BlockEntityType.Builder.create(TeleSender_RailEntity::new, TELESENDER_RAIL).build(null));
+        TELESENDER_RAILENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Transportables.MODID, "telesender_railentity"), FabricBlockEntityTypeBuilder.create(TeleSender_RailEntity::new, TELESENDER_RAIL).build(null));
     }
 
     private static void RegisterBlock(String Id, Block block)

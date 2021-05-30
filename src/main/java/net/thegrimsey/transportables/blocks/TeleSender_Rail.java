@@ -27,7 +27,7 @@ public class TeleSender_Rail extends AbstractActionRail implements BlockEntityPr
 
     public TeleSender_Rail(Settings settings) {
         super(true, settings);
-        this.setDefaultState(this.stateManager.getDefaultState().with(SHAPE, RailShape.NORTH_SOUTH).with(POWERED, false));
+        this.setDefaultState(this.stateManager.getDefaultState().with(POWERED, false));
     }
 
     @Override

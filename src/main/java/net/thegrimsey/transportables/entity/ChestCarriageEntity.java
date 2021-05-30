@@ -41,7 +41,7 @@ public class ChestCarriageEntity extends AbstractCarriageEntity implements Inven
         carriage.prevY = y;
         carriage.prevZ = z;
 
-        carriage.yaw = yaw;
+        carriage.setYaw(yaw);
 
         return carriage;
     }
@@ -102,7 +102,7 @@ public class ChestCarriageEntity extends AbstractCarriageEntity implements Inven
 
     @Override
     public boolean canPlayerUse(PlayerEntity player) {
-        if (this.removed) {
+        if (this.isRemoved()) {
             return false;
         } else {
             return !(player.squaredDistanceTo(this) > (REACH_DISTANCE*REACH_DISTANCE));
@@ -135,7 +135,7 @@ public class ChestCarriageEntity extends AbstractCarriageEntity implements Inven
             double z = -0.7F + (i % 2) * 1.3F;
 
             // Rotate position
-            float angle = -this.yaw * 0.017453292F - 1.5707964F;
+            float angle = -this.getYaw() * 0.017453292F - 1.5707964F;
             double f = MathHelper.cos(angle);
             double g = MathHelper.sin(angle);
             double rX = x * f + z * g;

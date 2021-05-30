@@ -56,7 +56,7 @@ public class LinkerItem extends Item {
                 int maxDistance = Transportables.CONFIG.TELESENDER_RANGE;
                 if(sqrDist > maxDistance * maxDistance)
                 {
-                    long distance = Math.round(MathHelper.sqrt(sqrDist));
+                    long distance = Math.round(MathHelper.sqrt((float) sqrDist));
                     context.getPlayer().sendMessage(new TranslatableText("transportables.linker.outofrange", distance, maxDistance), true);
                     return ActionResult.FAIL;
                 }
@@ -111,7 +111,7 @@ public class LinkerItem extends Item {
                     int maxDistance = Transportables.CONFIG.CARRIAGE_LINK_RANGE;
                     if(sqrDist > maxDistance * maxDistance)
                     {
-                        long distance = Math.round(MathHelper.sqrt(sqrDist));
+                        long distance = Math.round(MathHelper.sqrt((float) sqrDist));
                         user.sendMessage(new TranslatableText("transportables.linker.carriage_outofrange", distance, maxDistance), true);
                         return ActionResult.SUCCESS;
                     }

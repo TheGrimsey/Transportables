@@ -1,13 +1,13 @@
 package net.thegrimsey.transportables.entity;
 
-import net.minecraft.client.render.entity.EntityRenderDispatcher;
+import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.util.Identifier;
 import net.thegrimsey.transportables.Transportables;
 
 public class ChestCarriageEntityRenderer extends LivingEntityRenderer<ChestCarriageEntity, ChestCarriageEntityModel> {
-    public ChestCarriageEntityRenderer(EntityRenderDispatcher entityRenderDispatcher) {
-        super(entityRenderDispatcher, new ChestCarriageEntityModel(), AbstractCarriageEntity.CARRIAGE_DIMENSIONS.width / 2F);
+    public ChestCarriageEntityRenderer(EntityRendererFactory.Context context) {
+        super(context, new ChestCarriageEntityModel(), AbstractCarriageEntity.CARRIAGE_DIMENSIONS.width / 2F);
     }
 
     @Override

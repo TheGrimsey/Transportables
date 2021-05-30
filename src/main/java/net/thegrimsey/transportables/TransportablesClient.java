@@ -12,7 +12,7 @@ public class TransportablesClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        EntityRendererRegistry.INSTANCE.register(TransportablesEntities.CARRIAGE, (dispatcher, context) -> new CarriageEntityRenderer(dispatcher));
-        EntityRendererRegistry.INSTANCE.register(TransportablesEntities.CHEST_CARRIAGE, (dispatcher, context) -> new ChestCarriageEntityRenderer(dispatcher));
+        EntityRendererRegistry.INSTANCE.register(TransportablesEntities.CARRIAGE, CarriageEntityRenderer::new);
+        EntityRendererRegistry.INSTANCE.register(TransportablesEntities.CHEST_CARRIAGE, ChestCarriageEntityRenderer::new);
     }
 }

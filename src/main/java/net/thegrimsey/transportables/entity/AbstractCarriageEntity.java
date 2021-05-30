@@ -96,7 +96,7 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
             }
         }
 
-        this.bodyYaw = this.yaw;
+        this.bodyYaw = this.getYaw();
     }
 
     @Override
@@ -143,7 +143,7 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
             double z = -0.7F + (i % 2) * 1.3F;
 
             // Rotate position
-            float angle = -this.yaw * 0.017453292F - 1.5707964F;
+            float angle = -this.getYaw() * 0.017453292F - 1.5707964F;
             double f = MathHelper.cos(angle);
             double g = MathHelper.sin(angle);
             double rX = x * f + z * g;
@@ -162,11 +162,11 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
     protected void updatePassengerRotation(Entity entity) {
         float rot = 90F * (getPassengerList().indexOf(entity) % 2 == 0 ? -1F : 1F);
 
-        entity.setBodyYaw(this.yaw + rot);
-        float f = MathHelper.wrapDegrees(entity.yaw - this.yaw + rot);
+        entity.setBodyYaw(this.getYaw() + rot);
+        float f = MathHelper.wrapDegrees(entity.getYaw() - this.getYaw() + rot);
         float g = MathHelper.clamp(f, -89.9F, 89.9F);
         entity.prevYaw += g - f;
-        entity.yaw += g - f;
+        entity.setYaw(entity.getYaw() + g - f);
     }
 
     @Override
