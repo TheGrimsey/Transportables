@@ -23,10 +23,9 @@ public class CarriageItem extends Item {
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
 
-        if(!context.getWorld().isClient())
-        {
+        if (!context.getWorld().isClient()) {
             CarriageEntity carriage = CarriageEntity.create(context.getWorld(), context.getBlockPos().getX() + 0.5D, context.getBlockPos().getY() + 1.25D, context.getBlockPos().getZ() + 0.5D, context.getPlayerYaw());
-            if(context.getStack().hasCustomName())
+            if (context.getStack().hasCustomName())
                 carriage.setCustomName(context.getStack().getName());
 
             context.getWorld().spawnEntity(carriage);

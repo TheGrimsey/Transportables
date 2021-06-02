@@ -1,21 +1,18 @@
 package net.thegrimsey.transportables.entity;
 
 import net.minecraft.client.model.*;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.entity.model.BoatEntityModel;
 import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Vec3d;
 
-public class CarriageEntityModel extends EntityModel<CarriageEntity> {
+public class CarriageEntityModel extends EntityModel<AbstractCarriageEntity> {
 
     private final ModelPart mainCart;
     private final ModelPart frontAxel;
     private final ModelPart backAxel;
 
-    public CarriageEntityModel()
-    {
+    public CarriageEntityModel() {
         ModelData modelData = new ModelData();
         ModelPartData modelPartData = modelData.getRoot();
 
@@ -67,12 +64,7 @@ public class CarriageEntityModel extends EntityModel<CarriageEntity> {
     }
 
     @Override
-    public void setAngles(CarriageEntity entity, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch) {
-        final float circumference = (7*4);
-        Vec3d forwardMovement = entity.getVelocity().rotateY(-entity.getPitch());
-        float rot = (float) Math.toRadians((-forwardMovement.x / circumference) * 360F);
-        frontAxel.pitch += rot;
-        backAxel.pitch += rot;
+    public void setAngles(AbstractCarriageEntity entity, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch) {
     }
 
     @Override

@@ -12,15 +12,13 @@ public class TransportablesItems {
     public static final CarriageItem CARRIAGE_ITEM = new CarriageItem();
     public static final ChestCarriageItem CHEST_CARRIAGE_ITEM = new ChestCarriageItem();
 
-    public static void RegisterItems()
-    {
+    public static void RegisterItems() {
         RegisterItem("linker", LINKER_ITEM);
         RegisterItem("carriage", CARRIAGE_ITEM);
         RegisterItem("chest_carriage", CHEST_CARRIAGE_ITEM);
     }
 
-    private static void RegisterItem(String Id, Item item)
-    {
+    private static void RegisterItem(String Id, Item item) {
         Registry.register(Registry.ITEM, new Identifier(Transportables.MODID, Id.toLowerCase()), item);
     }
 }

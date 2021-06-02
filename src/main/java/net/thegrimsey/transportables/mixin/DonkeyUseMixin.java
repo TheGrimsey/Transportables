@@ -12,26 +12,23 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /*
-*   Unlike horses, donkeys do not call itemStack.useOnEntity when interacted with.
-*   This makes it so the linker doesn't work on donkeys.
-*   This mixin simply puts a check for that at the top of the interactMob function in AbstractDonkeyEntity for when you use the linker.
-*
-*   Should act as Horse does.
+ *   Unlike horses, donkeys do not call itemStack.useOnEntity when interacted with.
+ *   This makes it so the linker doesn't work on donkeys.
+ *   This mixin simply puts a check for that at the top of the interactMob function in AbstractDonkeyEntity for when you use the linker.
+ *
+ *   Should act as Horse does.
  */
 @Mixin(AbstractDonkeyEntity.class)
 public abstract class DonkeyUseMixin {
 
     @Inject(at = @At("HEAD"), method = "interactMob", cancellable = true)
-    private void interactMob(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> info)
-    {
+    private void interactMob(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> info) {
         AbstractDonkeyEntity entity = (AbstractDonkeyEntity) (Object) this;
-        if(!entity.isBaby() && !player.shouldCancelInteraction())
-        {
+        if (!entity.isBaby() && !player.shouldCancelInteraction()) {
             ItemStack handStack = player.getStackInHand(hand);
-            if(!handStack.isEmpty() && handStack.getItem() instanceof LinkerItem)
-            {
+            if (!handStack.isEmpty() && handStack.getItem() instanceof LinkerItem) {
                 ActionResult actionResult = handStack.useOnEntity(player, entity, hand);
-                if(actionResult.isAccepted())
+                if (actionResult.isAccepted())
                     info.setReturnValue(actionResult);
             }
         }

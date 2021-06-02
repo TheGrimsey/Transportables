@@ -1,27 +1,27 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "pattern": [
-      "G G",
-      "DSD",
-      "GRG"
-    ],
-    "key": {
-      "G": {
-        "item": "minecraft:gold_ingot"
-      },
-      "D": {
-        "item": "minecraft:diamond"
-      },
-      "S": {
-        "item": "minecraft:stick"
-      },
-      "R": {
-        "item": "minecraft:redstone"
-      }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "G G",
+    "DSD",
+    "GRG"
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:gold_ingot"
     },
-    "result": {
-      "item": "transportables:highpowered_rail",
-      "count": 4
+    "D": {
+      "item": "minecraft:diamond"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "R": {
+      "item": "minecraft:redstone"
     }
+  },
+  "result": {
+    "item": "transportables:highpowered_rail",
+    "count": 4
   }
+}
 

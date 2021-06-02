@@ -27,13 +27,16 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Iterator;
 
 public class ChestCarriageEntity extends AbstractCarriageEntity implements Inventory, NamedScreenHandlerFactory {
-    private DefaultedList<ItemStack> inventory;
-
     final float REACH_DISTANCE = 5F;
     final int MAX_PASSENGERS = 2;
+    private DefaultedList<ItemStack> inventory;
 
-    public static ChestCarriageEntity create(World world, double x, double y, double z, float yaw)
-    {
+    public ChestCarriageEntity(EntityType<? extends LivingEntity> entityType, World world) {
+        super(entityType, world);
+        this.inventory = DefaultedList.ofSize(size(), ItemStack.EMPTY);
+    }
+
+    public static ChestCarriageEntity create(World world, double x, double y, double z, float yaw) {
         ChestCarriageEntity carriage = new ChestCarriageEntity(TransportablesEntities.CHEST_CARRIAGE, world);
         carriage.setPosition(x, y, z);
         carriage.setVelocity(Vec3d.ZERO);
@@ -46,14 +49,9 @@ public class ChestCarriageEntity extends AbstractCarriageEntity implements Inven
         return carriage;
     }
 
-    public ChestCarriageEntity(EntityType<? extends LivingEntity> entityType, World world) {
-        super(entityType, world);
-        this.inventory = DefaultedList.ofSize(size(), ItemStack.EMPTY);
-    }
-
     @Override
     public int size() {
-        return 9*6;
+        return 9 * 6;
     }
 
     public boolean isEmpty() {
@@ -66,7 +64,7 @@ public class ChestCarriageEntity extends AbstractCarriageEntity implements Inven
             }
 
             itemStack = itr.next();
-        } while(itemStack.isEmpty());
+        } while (itemStack.isEmpty());
 
         return false;
     }
@@ -105,21 +103,20 @@ public class ChestCarriageEntity extends AbstractCarriageEntity implements Inven
         if (this.isRemoved()) {
             return false;
         } else {
-            return !(player.squaredDistanceTo(this) > (REACH_DISTANCE*REACH_DISTANCE));
+            return !(player.squaredDistanceTo(this) > (REACH_DISTANCE * REACH_DISTANCE));
         }
     }
 
     @Override
     public ActionResult interact(PlayerEntity player, Hand hand) {
         ItemStack handStack = player.getStackInHand(hand);
-        if(!handStack.isEmpty())
-        {
-            ActionResult result =  handStack.useOnEntity(player, this, hand);
-            if(result.isAccepted())
+        if (!handStack.isEmpty()) {
+            ActionResult result = handStack.useOnEntity(player, this, hand);
+            if (result.isAccepted())
                 return result;
         }
 
-        if(player.isSneaking()) {
+        if (player.isSneaking()) {
             player.openHandledScreen(this);
             return ActionResult.SUCCESS;
         }

@@ -6,7 +6,8 @@ Forge port will be done after the Fabric version has been completed. **Backports
 
 # Requirements
 
-Transportables depends on **[Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api)** and **[Cloth Config](https://www.curseforge.com/minecraft/mc-mods/cloth-config).**
+Transportables depends on **[Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api)**
+and **[Cloth Config](https://www.curseforge.com/minecraft/mc-mods/cloth-config).**
 
 ## License
 

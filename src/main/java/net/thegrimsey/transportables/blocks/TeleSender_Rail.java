@@ -4,7 +4,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.enums.RailShape;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.item.ItemStack;
@@ -32,8 +31,8 @@ public class TeleSender_Rail extends AbstractActionRail implements BlockEntityPr
 
     @Override
     public void onMoveOnRail(BlockPos pos, BlockState state, AbstractMinecartEntity minecart, CallbackInfo info) {
-        TeleSender_RailEntity blockEntity = (TeleSender_RailEntity)minecart.world.getBlockEntity(pos);
-        if(blockEntity == null || !blockEntity.hasDestination() || !state.get(POWERED))
+        TeleSender_RailEntity blockEntity = (TeleSender_RailEntity) minecart.world.getBlockEntity(pos);
+        if (blockEntity == null || !blockEntity.hasDestination() || !state.get(POWERED))
             return;
 
         // Move minecart. Not using teleport because of problems with passengers.

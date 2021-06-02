@@ -2,7 +2,6 @@
   "schemaVersion": 1,
   "id": "transportables",
   "version": "${version}",
-
   "name": "Transportables",
   "description": "A mod that adds more ways to travel. Primarily through rail.",
   "authors": [
@@ -12,10 +11,8 @@
     "homepage": "https://github.com/TheGrimsey/Transportables",
     "sources": "https://github.com/TheGrimsey/Transportables"
   },
-
   "license": "",
   "icon": "assets/transportables/icon.png",
-
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -28,7 +25,6 @@
   "mixins": [
     "transportables.mixins.json"
   ],
-
   "depends": {
     "fabricloader": ">=0.11.3",
     "fabric": "*",

@@ -1,8 +1,8 @@
 {
-    "replace": false,
-    "values": [
-        "transportables:highpowered_rail",
-        "transportables:launching_rail",
-        "transportables:telesender_rail"
-    ]
+  "replace": false,
+  "values": [
+    "transportables:highpowered_rail",
+    "transportables:launching_rail",
+    "transportables:telesender_rail"
+  ]
 }

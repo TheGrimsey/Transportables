@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /*
-*   Mixin for climb speed on IronLadders.
+ *   Mixin for climb speed on IronLadders.
  */
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityClimbSpeedMixin {
@@ -19,7 +19,7 @@ public abstract class LivingEntityClimbSpeedMixin {
         LivingEntity livingEntity = (LivingEntity) (Object) this;
 
         if ((livingEntity.horizontalCollision) && livingEntity.isClimbing() && livingEntity.getClimbingPos().isPresent()) {
-            if(livingEntity.getEntityWorld().getBlockState(livingEntity.getClimbingPos().get()).getBlock() instanceof IronLadder){
+            if (livingEntity.getEntityWorld().getBlockState(livingEntity.getClimbingPos().get()).getBlock() instanceof IronLadder) {
                 // Set vertical velocity equal to climbSpeed.
                 Vec3d velocity = new Vec3d(livingEntity.getVelocity().x, IronLadder.climbSpeed, livingEntity.getVelocity().z);
                 // Override velocity return.

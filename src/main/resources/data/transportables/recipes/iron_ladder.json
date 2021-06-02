@@ -1,21 +1,21 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "pattern": [
-      "III",
-      "S S",
-      "III"
-    ],
-    "key": {
-      "I": {
-        "item": "minecraft:iron_ingot"
-      },
-      "S": {
-        "item": "minecraft:stick"
-      }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    "S S",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
     },
-    "result": {
-      "item": "transportables:iron_ladder",
-      "count": 6
+    "S": {
+      "item": "minecraft:stick"
     }
+  },
+  "result": {
+    "item": "transportables:iron_ladder",
+    "count": 6
   }
+}
 

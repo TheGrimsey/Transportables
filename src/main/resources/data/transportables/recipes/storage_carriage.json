@@ -1,19 +1,19 @@
 {
-    "type": "minecraft:crafting_shapeless",
-    "ingredients": [
-      {
-        "item": "transportables:carriage"
-      },
-      {
-        "item": "minecraft:chest"
-      },
-      {
-        "item": "minecraft:chest"
-      }
-    ],
-    "result": {
-      "item": "transportables:chest_carriage",
-      "count": 1
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "transportables:carriage"
+    },
+    {
+      "item": "minecraft:chest"
+    },
+    {
+      "item": "minecraft:chest"
     }
+  ],
+  "result": {
+    "item": "transportables:chest_carriage",
+    "count": 1
   }
+}
 

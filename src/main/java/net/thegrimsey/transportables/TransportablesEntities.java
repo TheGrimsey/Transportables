@@ -14,8 +14,7 @@ public class TransportablesEntities {
     public static EntityType<CarriageEntity> CARRIAGE;
     public static EntityType<ChestCarriageEntity> CHEST_CARRIAGE;
 
-    public static void RegisterEntities()
-    {
+    public static void RegisterEntities() {
         // If we add more entities this should be refactored to use a wildcard function.
         CARRIAGE = Registry.register(Registry.ENTITY_TYPE, new Identifier(Transportables.MODID, "carriage"), FabricEntityTypeBuilder.create(SpawnGroup.MISC, CarriageEntity::new).dimensions(CarriageEntity.CARRIAGE_DIMENSIONS).build());
         FabricDefaultAttributeRegistry.register(CARRIAGE, CarriageEntity.createLivingAttributes());

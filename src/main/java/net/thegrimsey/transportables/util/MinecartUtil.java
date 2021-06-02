@@ -15,7 +15,7 @@ public class MinecartUtil {
             } else if (((MinecartEntityAccessor) minecart).invokeWillHitBlockAt(pos.east())) {
                 x = -0.02D;
             }
-        } else if(railShape == RailShape.NORTH_SOUTH) {
+        } else if (railShape == RailShape.NORTH_SOUTH) {
             if (((MinecartEntityAccessor) minecart).invokeWillHitBlockAt(pos.north())) {
                 z = 0.02D;
             } else if (((MinecartEntityAccessor) minecart).invokeWillHitBlockAt(pos.south())) {

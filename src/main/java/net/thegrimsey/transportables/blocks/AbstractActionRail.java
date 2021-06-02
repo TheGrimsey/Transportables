@@ -24,7 +24,8 @@ public abstract class AbstractActionRail extends AbstractRailBlock {
         return SHAPE;
     }
 
-    public void onMoveOnRail(BlockPos pos, BlockState state, AbstractMinecartEntity minecart, CallbackInfo info) {}
+    public void onMoveOnRail(BlockPos pos, BlockState state, AbstractMinecartEntity minecart, CallbackInfo info) {
+    }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {

@@ -1,6 +1,6 @@
 {
-    "replace": false,
-    "values": [
-        "transportables:iron_ladder"
-    ]
+  "replace": false,
+  "values": [
+    "transportables:iron_ladder"
+  ]
 }

@@ -1,26 +1,26 @@
 {
-    "display": {
-      "icon": {
-        "item": "minecraft:minecart"
-      },
-      "title": {
-        "translate": "transportables.advancements.root.title"
-      },
-      "description": {
-        "translate": "transportables.advancements.root.description"
-      },
-      "frame": "task",
-      "show_toast": false,
-      "announce_to_chat": false,
-      "hidden": false,
-      "background": "minecraft:textures/block/iron_block.png"
+  "display": {
+    "icon": {
+      "item": "minecraft:minecart"
     },
-    "criteria": {
-      "unlock_iron": {
-        "trigger": "minecraft:recipe_unlocked",
-        "conditions": {
-            "recipe": "minecraft:iron_ingot"
-        }
+    "title": {
+      "translate": "transportables.advancements.root.title"
+    },
+    "description": {
+      "translate": "transportables.advancements.root.description"
+    },
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false,
+    "background": "minecraft:textures/block/iron_block.png"
+  },
+  "criteria": {
+    "unlock_iron": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:iron_ingot"
       }
     }
   }
+}

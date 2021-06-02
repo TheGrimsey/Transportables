@@ -1,7 +1,7 @@
 {
-    "parent": "minecraft:block/rail_flat",
-    "textures": {
-      "rail": "transportables:block/launching_rail"
-    }
+  "parent": "minecraft:block/rail_flat",
+  "textures": {
+    "rail": "transportables:block/launching_rail"
   }
+}
 

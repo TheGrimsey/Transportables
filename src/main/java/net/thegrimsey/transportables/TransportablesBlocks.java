@@ -33,8 +33,7 @@ public class TransportablesBlocks {
     // Block Entities
     public static BlockEntityType<TeleSender_RailEntity> TELESENDER_RAILENTITY;
 
-    public static void RegisterBlocks()
-    {
+    public static void RegisterBlocks() {
         RegisterBlock("highpowered_rail", HIGHPOWERED_RAIL);
         RegisterBlock("launching_rail", LAUNCHING_RAIL);
         RegisterBlock("telesender_rail", TELESENDER_RAIL);
@@ -44,19 +43,17 @@ public class TransportablesBlocks {
         TELESENDER_RAILENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Transportables.MODID, "telesender_railentity"), FabricBlockEntityTypeBuilder.create(TeleSender_RailEntity::new, TELESENDER_RAIL).build(null));
     }
 
-    private static void RegisterBlock(String Id, Block block)
-    {
+    private static void RegisterBlock(String Id, Block block) {
         Identifier identifier = new Identifier(Transportables.MODID, Id.toLowerCase());
         Registry.register(Registry.BLOCK, identifier, block);
         Registry.register(Registry.ITEM, identifier, new BlockItem(block, new FabricItemSettings().group(ItemGroup.TRANSPORTATION)));
 
-        if(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT)
+        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT)
             RegisterBlockRenderLayerMap(block);
     }
 
     @Environment(EnvType.CLIENT)
-    private static void RegisterBlockRenderLayerMap(Block block)
-    {
+    private static void RegisterBlockRenderLayerMap(Block block) {
         BlockRenderLayerMap.INSTANCE.putBlock(block, RenderLayer.getCutout());
 
     }

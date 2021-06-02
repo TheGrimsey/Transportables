@@ -41,10 +41,8 @@ public class LinkerItem extends Item {
     public ActionResult useOnBlock(ItemUsageContext context) {
         BlockState hitBlockState = context.getWorld().getBlockState(context.getBlockPos());
 
-        if(Objects.requireNonNull(context.getPlayer()).isSneaking())
-        {
-            if(hitBlockState.getBlock() == TransportablesBlocks.TELESENDER_RAIL)
-            {
+        if (Objects.requireNonNull(context.getPlayer()).isSneaking()) {
+            if (hitBlockState.getBlock() == TransportablesBlocks.TELESENDER_RAIL) {
                 // Get position from NBT data.
                 NbtCompound tag = context.getStack().getOrCreateTag();
                 int X = tag.getInt("X");
@@ -52,10 +50,9 @@ public class LinkerItem extends Item {
                 int Z = tag.getInt("Z");
 
                 // Limit teleport distance.
-                double sqrDist = context.getBlockPos().getSquaredDistance(X,Y,Z, true);
+                double sqrDist = context.getBlockPos().getSquaredDistance(X, Y, Z, true);
                 int maxDistance = Transportables.CONFIG.TELESENDER_RANGE;
-                if(sqrDist > maxDistance * maxDistance)
-                {
+                if (sqrDist > maxDistance * maxDistance) {
                     long distance = Math.round(MathHelper.sqrt((float) sqrDist));
                     context.getPlayer().sendMessage(new TranslatableText("transportables.linker.outofrange", distance, maxDistance), true);
                     return ActionResult.FAIL;
@@ -72,12 +69,9 @@ public class LinkerItem extends Item {
                 context.getPlayer().sendMessage(new TranslatableText("transportables.linker.updateddestination", X, Y, Z), true);
                 return ActionResult.success(true);
             }
-        }
-        else
-        {
+        } else {
             // Save position of rail.
-            if(hitBlockState.getBlock() instanceof AbstractRailBlock)
-            {
+            if (hitBlockState.getBlock() instanceof AbstractRailBlock) {
                 NbtCompound tag = context.getStack().getOrCreateTag();
                 tag.putInt("X", context.getBlockPos().getX());
                 tag.putInt("Y", context.getBlockPos().getY());
@@ -94,23 +88,20 @@ public class LinkerItem extends Item {
 
     @Override
     public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
-        if(entity.world.isClient)
+        if (entity.world.isClient)
             return ActionResult.PASS;
 
-        if(entity instanceof HorseBaseEntity) {
+        if (entity instanceof HorseBaseEntity) {
             NbtCompound tag = stack.getTag();
-            if(tag != null && tag.contains(carriageKey))
-            {
+            if (tag != null && tag.contains(carriageKey)) {
                 UUID carriageId = tag.getUuid(carriageKey);
 
-                Entity targetEntity = ((ServerWorld)entity.world).getEntity(carriageId);
-                if(targetEntity instanceof AbstractCarriageEntity)
-                {
+                Entity targetEntity = ((ServerWorld) entity.world).getEntity(carriageId);
+                if (targetEntity instanceof AbstractCarriageEntity) {
                     // Limit link distance.
                     double sqrDist = entity.getPos().squaredDistanceTo(targetEntity.getPos());
                     int maxDistance = Transportables.CONFIG.CARRIAGE_LINK_RANGE;
-                    if(sqrDist > maxDistance * maxDistance)
-                    {
+                    if (sqrDist > maxDistance * maxDistance) {
                         long distance = Math.round(MathHelper.sqrt((float) sqrDist));
                         user.sendMessage(new TranslatableText("transportables.linker.carriage_outofrange", distance, maxDistance), true);
                         return ActionResult.SUCCESS;
@@ -126,12 +117,11 @@ public class LinkerItem extends Item {
             }
             return ActionResult.PASS;
         } else if (entity instanceof AbstractCarriageEntity) {
-            if(!user.isSneaking())
+            if (!user.isSneaking())
                 return ActionResult.PASS;
 
             AbstractCarriageEntity carriageEntity = (AbstractCarriageEntity) entity;
-            if(carriageEntity.HasCarriageHolder())
-            {
+            if (carriageEntity.HasCarriageHolder()) {
                 carriageEntity.removeCarriageHolder();
                 user.sendMessage(new TranslatableText("transportables.linker.carriage_unlink"), true);
                 return ActionResult.SUCCESS;
@@ -150,15 +140,12 @@ public class LinkerItem extends Item {
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         // Retrieve position for tooltip.
         NbtCompound tag = stack.getTag();
-        if(tag != null && tag.contains("X"))
-        {
+        if (tag != null && tag.contains("X")) {
             int x = tag.getInt("X");
             int y = tag.getInt("Y");
             int z = tag.getInt("Z");
             tooltip.add(new TranslatableText("transportables.linker.tooltip_01", x, y, z));
-        }
-        else
-        {
+        } else {
             tooltip.add(new TranslatableText("transportables.linker.tooltip_01_nodestination"));
         }
 

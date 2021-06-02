@@ -1,24 +1,24 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "pattern": [
-      "   ",
-      "BBB",
-      "WSW"
-    ],
-    "key": {
-      "B": {
-        "tag": "minecraft:boats"
-      },
-      "W": {
-        "tag": "minecraft:planks"
-      },
-      "S": {
-        "item": "minecraft:stick"
-      }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    "BBB",
+    "WSW"
+  ],
+  "key": {
+    "B": {
+      "tag": "minecraft:boats"
     },
-    "result": {
-      "item": "transportables:carriage",
-      "count": 1
+    "W": {
+      "tag": "minecraft:planks"
+    },
+    "S": {
+      "item": "minecraft:stick"
     }
+  },
+  "result": {
+    "item": "transportables:carriage",
+    "count": 1
   }
+}
 

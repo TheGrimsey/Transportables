@@ -31,10 +31,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 public abstract class AbstractCarriageEntity extends LivingEntity {
+    public static final EntityDimensions CARRIAGE_DIMENSIONS = EntityDimensions.fixed(2.5f, 1.5f);
     static final TrackedData<Optional<UUID>> CARRIAGE_HOLDER = DataTracker.registerData(CarriageEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
-
-    public static final EntityDimensions CARRIAGE_DIMENSIONS = EntityDimensions.fixed(2.5f,1.5f);
-
     // Distance at which the cart should follow behind the holder.
     final float FOLLOW_DISTANCE = 2.75F;
     // Max passengers in a cart.
@@ -53,14 +51,15 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
         Objects.requireNonNull(getAttributeInstance(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE)).setBaseValue(0.95D);
     }
 
-    public boolean HasCarriageHolder()
-    {
+    public boolean HasCarriageHolder() {
         return this.dataTracker.get(CARRIAGE_HOLDER).isPresent();
     }
+
     public void setCarriageHolder(HorseBaseEntity carriageHolder) {
         this.dataTracker.set(CARRIAGE_HOLDER, Optional.of(carriageHolder.getUuid()));
         this.carriageHolder = carriageHolder;
     }
+
     public void removeCarriageHolder() {
         this.dataTracker.set(CARRIAGE_HOLDER, Optional.empty());
         this.carriageHolder = null;
@@ -70,26 +69,24 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
     public void tick() {
         super.tick();
 
-        if(carriageHolder != null) {
-            if(!carriageHolder.isAlive())
+        if (carriageHolder != null) {
+            if (!carriageHolder.isAlive())
                 removeCarriageHolder();
-        } else if(!this.world.isClient) // On the server if a UUID is set in dataTracker then update the carriage holder. Also acts as lazy load for saved from file.
+        } else if (!this.world.isClient) // On the server if a UUID is set in dataTracker then update the carriage holder. Also acts as lazy load for saved from file.
         {
             Optional<UUID> holderId = this.dataTracker.get(CARRIAGE_HOLDER);
-            if(holderId.isPresent()) {
-                Entity carriageHolder = ((ServerWorld)this.world).getEntity(holderId.get());
-                if(carriageHolder instanceof HorseEntity)
+            if (holderId.isPresent()) {
+                Entity carriageHolder = ((ServerWorld) this.world).getEntity(holderId.get());
+                if (carriageHolder instanceof HorseEntity)
                     setCarriageHolder((HorseEntity) carriageHolder);
             }
         }
 
-        if(this.world.isClient)
-        {
+        if (this.world.isClient) {
             Optional<UUID> holderId = this.dataTracker.get(CARRIAGE_HOLDER);
-            if(holderId.isPresent())
-            {
+            if (holderId.isPresent()) {
                 Entity playerVehicle = MinecraftClient.getInstance().player.getVehicle();
-                if(playerVehicle != null && playerVehicle.getUuid().equals(holderId.get())) {
+                if (playerVehicle != null && playerVehicle.getUuid().equals(holderId.get())) {
                     carriageHolder = (HorseBaseEntity) playerVehicle;
                     tickCarriageMovement();
                 }
@@ -105,15 +102,14 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
     }
 
     protected void tickCarriageMovement() {
-        if(carriageHolder == null)
+        if (carriageHolder == null)
             return;
 
         Vec3d delta = getPos().subtract(carriageHolder.getPos());
 
         // Only move when we are out of follow distance. This allows us to just rotate if needed which looks NICE.
         boolean shouldMove = delta.lengthSquared() > FOLLOW_DISTANCE * FOLLOW_DISTANCE;
-        if(shouldMove)
-        {
+        if (shouldMove) {
             // We only want to move up to our follow distance.
             double distanceToMove = delta.length() - FOLLOW_DISTANCE;
             move(MovementType.SELF, delta.normalize().multiply(distanceToMove * -1D));
@@ -184,7 +180,7 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
     public void readCustomDataFromNbt(NbtCompound tag) {
         super.readCustomDataFromNbt(tag);
 
-        if(tag.contains(CARRIAGE_HOLDER_KEY))
+        if (tag.contains(CARRIAGE_HOLDER_KEY))
             this.dataTracker.set(CARRIAGE_HOLDER, Optional.of(tag.getUuid(CARRIAGE_HOLDER_KEY)));
     }
 
@@ -192,7 +188,7 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
     public void writeCustomDataToNbt(NbtCompound tag) {
         super.writeCustomDataToNbt(tag);
 
-        if(carriageHolder != null)
+        if (carriageHolder != null)
             tag.putUuid(CARRIAGE_HOLDER_KEY, carriageHolder.getUuid());
     }
 
@@ -204,19 +200,29 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
 
 
     @Override
-    public Iterable<ItemStack> getArmorItems() { return DefaultedList.of(); }
+    public Iterable<ItemStack> getArmorItems() {
+        return DefaultedList.of();
+    }
+
     @Override
-    public ItemStack getEquippedStack(EquipmentSlot slot) { return ItemStack.EMPTY; }
+    public ItemStack getEquippedStack(EquipmentSlot slot) {
+        return ItemStack.EMPTY;
+    }
+
     @Override
-    public void equipStack(EquipmentSlot slot, ItemStack stack) { }
+    public void equipStack(EquipmentSlot slot, ItemStack stack) {
+    }
+
     @Override
-    public Arm getMainArm() { return Arm.LEFT; }
+    public Arm getMainArm() {
+        return Arm.LEFT;
+    }
 
     @Override
     protected void drop(DamageSource source) {
         if (this.world.getGameRules().getBoolean(GameRules.DO_MOB_LOOT)) {
             ItemStack drops = new ItemStack(TransportablesItems.CARRIAGE_ITEM);
-            if(this.hasCustomName())
+            if (this.hasCustomName())
                 drops.setCustomName(this.getCustomName());
 
             this.dropStack(drops);

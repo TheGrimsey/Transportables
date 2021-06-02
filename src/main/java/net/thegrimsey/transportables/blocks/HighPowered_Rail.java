@@ -41,8 +41,7 @@ public class HighPowered_Rail extends AbstractActionRail {
     @Override
     public void onMoveOnRail(BlockPos pos, BlockState state, AbstractMinecartEntity minecart, CallbackInfo info) {
         // Slow down if this rail isn't powered.
-        if(!state.get(HighPowered_Rail.POWERED))
-        {
+        if (!state.get(HighPowered_Rail.POWERED)) {
             // Minecart will lose 75% of velocity for each tick on the rail.
             double slowDownScaler = 0.25D;
             minecart.setVelocity(minecart.getVelocity().multiply(slowDownScaler, 1.0D, slowDownScaler));
@@ -56,7 +55,7 @@ public class HighPowered_Rail extends AbstractActionRail {
         // If moving: Accelerate to full-speed in direction.
         if (speed > 0.01D) {
             // Because Minecart forward rotation is not equal to direction of movement we instead try to extrapolate it from the direction we are moving in.
-            minecart.setVelocity(velocity.normalize().multiply(((MinecartEntityAccessor)minecart).invokeGetMaxOffRailSpeed()*10D));
+            minecart.setVelocity(velocity.normalize().multiply(((MinecartEntityAccessor) minecart).invokeGetMaxOffRailSpeed() * 10D));
         } else {
             // We aren't moving so let's check if we will hit blocks that will set us moving.
             MinecartUtil.HandleBlockHit(pos, minecart, railShape);
@@ -72,7 +71,7 @@ public class HighPowered_Rail extends AbstractActionRail {
             int z = pos.getZ();
             boolean bl = true;
             RailShape railShape = state.get(SHAPE);
-            switch(railShape) {
+            switch (railShape) {
                 case NORTH_SOUTH:
                     if (boolean4) {
                         ++z;

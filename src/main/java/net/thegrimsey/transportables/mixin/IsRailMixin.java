@@ -13,7 +13,7 @@ public abstract class IsRailMixin {
     //Override static IsRail function so we can tell the game that we aren't a rail when we want to launch off.
     @Inject(at = @At("HEAD"), method = "isRail(Lnet/minecraft/block/BlockState;)Z", cancellable = true)
     private static void isRail(BlockState state, CallbackInfoReturnable<Boolean> info) {
-        if(state.getBlock() instanceof Launching_Rail && state.get(Launching_Rail.POWERED))
+        if (state.getBlock() instanceof Launching_Rail && state.get(Launching_Rail.POWERED))
             info.setReturnValue(false);
     }
 }

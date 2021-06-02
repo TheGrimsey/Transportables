@@ -1,7 +1,7 @@
 {
-    "parent": "minecraft:block/rail_flat",
-    "textures": {
-      "rail": "transportables:block/highpowered_rail"
-    }
+  "parent": "minecraft:block/rail_flat",
+  "textures": {
+    "rail": "transportables:block/highpowered_rail"
   }
+}
 
