@@ -97,9 +97,9 @@ public class LinkerItem extends Item {
                 UUID carriageId = tag.getUuid(carriageKey);
 
                 Entity targetEntity = ((ServerWorld) entity.world).getEntity(carriageId);
-                if (targetEntity instanceof AbstractCarriageEntity) {
+                if (targetEntity instanceof AbstractCarriageEntity targetCarriageEntity) {
                     // Limit link distance.
-                    double sqrDist = entity.getPos().squaredDistanceTo(targetEntity.getPos());
+                    double sqrDist = entity.getPos().squaredDistanceTo(targetCarriageEntity.getPos());
                     int maxDistance = Transportables.CONFIG.CARRIAGE_LINK_RANGE;
                     if (sqrDist > maxDistance * maxDistance) {
                         long distance = Math.round(MathHelper.sqrt((float) sqrDist));
@@ -107,7 +107,7 @@ public class LinkerItem extends Item {
                         return ActionResult.SUCCESS;
                     }
 
-                    ((AbstractCarriageEntity) targetEntity).setCarriageHolder((HorseBaseEntity) entity);
+                    targetCarriageEntity.setCarriageHolder((HorseBaseEntity) entity);
                     user.sendMessage(new TranslatableText("transportables.linker.carriage_linked"), true);
 
                     tag.remove(carriageKey);
@@ -116,11 +116,10 @@ public class LinkerItem extends Item {
                 }
             }
             return ActionResult.PASS;
-        } else if (entity instanceof AbstractCarriageEntity) {
+        } else if (entity instanceof AbstractCarriageEntity carriageEntity) {
             if (!user.isSneaking())
                 return ActionResult.PASS;
 
-            AbstractCarriageEntity carriageEntity = (AbstractCarriageEntity) entity;
             if (carriageEntity.HasCarriageHolder()) {
                 carriageEntity.removeCarriageHolder();
                 user.sendMessage(new TranslatableText("transportables.linker.carriage_unlink"), true);

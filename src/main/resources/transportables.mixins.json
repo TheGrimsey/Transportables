@@ -1,12 +1,13 @@
 {
   "required": true,
-  "minVersion": "0.8",
+  "minVersion": "0.8.3",
   "package": "net.thegrimsey.transportables.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
     "LivingEntityClimbSpeedMixin",
     "MinecartEntityAccessor",
     "MinecartRailBoostMixin",
+    "MinecartOffRailMixin",
     "IsRailMixin",
     "DonkeyUseMixin"
   ],

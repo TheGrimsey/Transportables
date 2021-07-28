@@ -77,8 +77,8 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
             Optional<UUID> holderId = this.dataTracker.get(CARRIAGE_HOLDER);
             if (holderId.isPresent()) {
                 Entity carriageHolder = ((ServerWorld) this.world).getEntity(holderId.get());
-                if (carriageHolder instanceof HorseEntity)
-                    setCarriageHolder((HorseEntity) carriageHolder);
+                if (carriageHolder instanceof HorseEntity horseEntity)
+                    setCarriageHolder(horseEntity);
             }
         }
 
