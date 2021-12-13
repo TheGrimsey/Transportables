@@ -44,7 +44,7 @@ public class LinkerItem extends Item {
         if (Objects.requireNonNull(context.getPlayer()).isSneaking()) {
             if (hitBlockState.getBlock() == TransportablesBlocks.TELESENDER_RAIL) {
                 // Get position from NBT data.
-                NbtCompound tag = context.getStack().getOrCreateTag();
+                NbtCompound tag = context.getStack().getOrCreateNbt();
                 int X = tag.getInt("X");
                 int Y = tag.getInt("Y");
                 int Z = tag.getInt("Z");
@@ -72,11 +72,11 @@ public class LinkerItem extends Item {
         } else {
             // Save position of rail.
             if (hitBlockState.getBlock() instanceof AbstractRailBlock) {
-                NbtCompound tag = context.getStack().getOrCreateTag();
+                NbtCompound tag = context.getStack().getOrCreateNbt();
                 tag.putInt("X", context.getBlockPos().getX());
                 tag.putInt("Y", context.getBlockPos().getY());
                 tag.putInt("Z", context.getBlockPos().getZ());
-                context.getStack().setTag(tag);
+                context.getStack().setNbt(tag);
 
                 context.getPlayer().sendMessage(new TranslatableText("transportables.linker.savedposition", context.getBlockPos().getX(), context.getBlockPos().getY(), context.getBlockPos().getZ()), true);
                 return ActionResult.success(true);
@@ -92,7 +92,7 @@ public class LinkerItem extends Item {
             return ActionResult.PASS;
 
         if (entity instanceof HorseBaseEntity) {
-            NbtCompound tag = stack.getTag();
+            NbtCompound tag = stack.getNbt();
             if (tag != null && tag.contains(carriageKey)) {
                 UUID carriageId = tag.getUuid(carriageKey);
 
@@ -107,11 +107,16 @@ public class LinkerItem extends Item {
                         return ActionResult.SUCCESS;
                     }
 
+                    if(!targetCarriageEntity.canLinkWith((HorseBaseEntity) entity)) {
+                        user.sendMessage(new TranslatableText("transportables.linker.carriage_cant_link"), true);
+                        return ActionResult.FAIL;
+                    }
+
                     targetCarriageEntity.setCarriageHolder((HorseBaseEntity) entity);
                     user.sendMessage(new TranslatableText("transportables.linker.carriage_linked"), true);
 
                     tag.remove(carriageKey);
-                    user.getStackInHand(hand).setTag(tag);
+                    user.getStackInHand(hand).setNbt(tag);
                     return ActionResult.SUCCESS;
                 }
             }
@@ -127,7 +132,7 @@ public class LinkerItem extends Item {
             }
 
             user.sendMessage(new TranslatableText("transportables.linker.carriage_link_start"), true);
-            user.getStackInHand(hand).getOrCreateTag().putUuid(carriageKey, entity.getUuid());
+            user.getStackInHand(hand).getOrCreateNbt().putUuid(carriageKey, entity.getUuid());
             return ActionResult.SUCCESS;
         }
 
@@ -138,7 +143,7 @@ public class LinkerItem extends Item {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         // Retrieve position for tooltip.
-        NbtCompound tag = stack.getTag();
+        NbtCompound tag = stack.getNbt();
         if (tag != null && tag.contains("X")) {
             int x = tag.getInt("X");
             int y = tag.getInt("Y");

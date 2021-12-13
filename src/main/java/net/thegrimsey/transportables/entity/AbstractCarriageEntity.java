@@ -10,7 +10,6 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.passive.HorseBaseEntity;
-import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -24,6 +23,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.thegrimsey.transportables.TransportablesItems;
+import net.thegrimsey.transportables.interfaces.HasCarriageInterface;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -58,11 +58,18 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
     public void setCarriageHolder(HorseBaseEntity carriageHolder) {
         this.dataTracker.set(CARRIAGE_HOLDER, Optional.of(carriageHolder.getUuid()));
         this.carriageHolder = carriageHolder;
+
+        ((HasCarriageInterface)carriageHolder).setHasCarriage(true);
     }
 
     public void removeCarriageHolder() {
         this.dataTracker.set(CARRIAGE_HOLDER, Optional.empty());
+        ((HasCarriageInterface)carriageHolder).setHasCarriage(false);
         this.carriageHolder = null;
+    }
+
+    public boolean canLinkWith(HorseBaseEntity horseBaseEntity) {
+        return carriageHolder == null && !((HasCarriageInterface)horseBaseEntity).hasCarriage();
     }
 
     @Override
@@ -77,7 +84,7 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
             Optional<UUID> holderId = this.dataTracker.get(CARRIAGE_HOLDER);
             if (holderId.isPresent()) {
                 Entity carriageHolder = ((ServerWorld) this.world).getEntity(holderId.get());
-                if (carriageHolder instanceof HorseEntity horseEntity)
+                if (carriageHolder instanceof HorseBaseEntity horseEntity && canLinkWith(horseEntity))
                     setCarriageHolder(horseEntity);
             }
         }
@@ -94,6 +101,15 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
         }
 
         this.bodyYaw = this.getYaw();
+    }
+
+    @Override
+    public void onDeath(DamageSource source) {
+        super.onDeath(source);
+
+        if(carriageHolder != null) {
+            removeCarriageHolder();
+        }
     }
 
     @Override

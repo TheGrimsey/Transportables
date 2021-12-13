@@ -40,7 +40,7 @@ public class TeleSender_RailEntity extends BlockEntity {
     }
 
     @Override
-    public NbtCompound writeNbt(NbtCompound tag) {
+    public void writeNbt(NbtCompound tag) {
         super.writeNbt(tag);
 
         if (destinationSet) {
@@ -48,8 +48,6 @@ public class TeleSender_RailEntity extends BlockEntity {
             tag.putInt("Y", y);
             tag.putInt("Z", z);
         }
-
-        return tag;
     }
 
     @Override

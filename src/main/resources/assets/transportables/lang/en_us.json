@@ -22,6 +22,7 @@
   "transportables.linker.carriage_linked": "Carriage linked successfully.",
   "transportables.linker.carriage_unlink": "Carriage unlinked.",
   "transportables.linker.carriage_outofrange": "Carriage is too far away (%d blocks, max range is %d)",
+  "transportables.linker.carriage_cant_link": "Carriage can't link with target.",
   "transportables.advancements.root.title": "Transportables",
   "transportables.advancements.root.description": "Rails and Carriages and Ladders, Oh My!",
   "transportables.advancements.thinking_with_rails.title": "Thinking with rails",
