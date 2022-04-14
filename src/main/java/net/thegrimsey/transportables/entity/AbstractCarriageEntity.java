@@ -35,6 +35,7 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
     static final TrackedData<Optional<UUID>> CARRIAGE_HOLDER = DataTracker.registerData(CarriageEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
     // Distance at which the cart should follow behind the holder.
     final float FOLLOW_DISTANCE = 2.75F;
+    final float FOLLOW_DISTANCE_SQURED = FOLLOW_DISTANCE * FOLLOW_DISTANCE;
     // Max passengers in a cart.
     final int MAX_PASSENGERS = 4;
     // Vertical offset for passenger seating.
@@ -74,20 +75,6 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
 
     @Override
     public void tick() {
-        super.tick();
-
-        if (carriageHolder != null) {
-            if (!carriageHolder.isAlive())
-                removeCarriageHolder();
-        } else if (!this.world.isClient) // On the server if a UUID is set in dataTracker then update the carriage holder. Also acts as lazy load for saved from file.
-        {
-            Optional<UUID> holderId = this.dataTracker.get(CARRIAGE_HOLDER);
-            if (holderId.isPresent()) {
-                Entity carriageHolder = ((ServerWorld) this.world).getEntity(holderId.get());
-                if (carriageHolder instanceof HorseBaseEntity horseEntity && canLinkWith(horseEntity))
-                    setCarriageHolder(horseEntity);
-            }
-        }
 
         if (this.world.isClient) {
             Optional<UUID> holderId = this.dataTracker.get(CARRIAGE_HOLDER);
@@ -97,6 +84,50 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
                     carriageHolder = (HorseBaseEntity) playerVehicle;
                     tickCarriageMovement();
                 }
+            }
+        } else {
+            int i = this.getStuckArrowCount();
+            if (i > 0) {
+                if (this.stuckArrowTimer <= 0) {
+                    this.stuckArrowTimer = 20 * (30 - i);
+                }
+
+                --this.stuckArrowTimer;
+                if (this.stuckArrowTimer <= 0) {
+                    this.setStuckArrowCount(i - 1);
+                }
+            }
+
+            int j = this.getStingerCount();
+            if (j > 0) {
+                if (this.stuckStingerTimer <= 0) {
+                    this.stuckStingerTimer = 20 * (30 - j);
+                }
+
+                --this.stuckStingerTimer;
+                if (this.stuckStingerTimer <= 0) {
+                    this.setStingerCount(j - 1);
+                }
+            }
+
+            if (this.age % 20 == 0) {
+                this.getDamageTracker().update();
+            }
+        }
+
+        this.tickMovement();
+
+        baseTick();
+
+        if (carriageHolder != null) {
+            if (!carriageHolder.isAlive())
+                removeCarriageHolder();
+        } else if (!this.world.isClient) { // On the server if a UUID is set in dataTracker then update the carriage holder. Also acts as lazy load from file.
+            Optional<UUID> holderId = this.dataTracker.get(CARRIAGE_HOLDER);
+            if (holderId.isPresent()) {
+                Entity carriageHolder = ((ServerWorld) this.world).getEntity(holderId.get());
+                if (carriageHolder instanceof HorseBaseEntity horseEntity && canLinkWith(horseEntity))
+                    setCarriageHolder(horseEntity);
             }
         }
 
@@ -121,17 +152,25 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
         if (carriageHolder == null)
             return;
 
-        Vec3d delta = getPos().subtract(carriageHolder.getPos());
+        Vec3d pos = getPos();
+        Vec3d carriageHolderPos = carriageHolder.getPos();
+        double deltaX = pos.x - carriageHolderPos.x;
+        double deltaY = pos.y - carriageHolderPos.y;
+        double deltaZ = pos.z - carriageHolderPos.z;
+        double lengthSquared = deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
 
         // Only move when we are out of follow distance. This allows us to just rotate if needed which looks NICE.
-        boolean shouldMove = delta.lengthSquared() > FOLLOW_DISTANCE * FOLLOW_DISTANCE;
+        boolean shouldMove = lengthSquared > FOLLOW_DISTANCE_SQURED;
         if (shouldMove) {
             // We only want to move up to our follow distance.
-            double distanceToMove = delta.length() - FOLLOW_DISTANCE;
-            move(MovementType.SELF, delta.normalize().multiply(distanceToMove * -1D));
+            double length = Math.sqrt(lengthSquared);
+            double distanceToMove = -(length - FOLLOW_DISTANCE);
+
+            Vec3d moveDistance = new Vec3d(deltaX / length * distanceToMove, deltaY / length  * distanceToMove, deltaZ / length  * distanceToMove);
+            move(MovementType.SELF, moveDistance);
         }
 
-        double yaw = Math.toDegrees(Math.atan2(delta.z, delta.x)) + 90D;
+        double yaw = Math.toDegrees(Math.atan2(deltaZ, deltaX)) + 90D;
         setRotation((float) yaw, 0.f);
     }
 
@@ -243,5 +282,10 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
 
             this.dropStack(drops);
         }
+    }
+
+    @Override
+    public boolean canBeRiddenInWater() {
+        return true;
     }
 }
