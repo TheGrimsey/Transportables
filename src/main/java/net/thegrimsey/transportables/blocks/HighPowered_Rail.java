@@ -55,7 +55,7 @@ public class HighPowered_Rail extends AbstractActionRail {
         // If moving: Accelerate to full-speed in direction.
         if (speed > 0.01D) {
             // Because Minecart forward rotation is not equal to direction of movement we instead try to extrapolate it from the direction we are moving in.
-            minecart.setVelocity(velocity.normalize().multiply(((MinecartEntityAccessor) minecart).invokeGetMaxOffRailSpeed() * 10D));
+            minecart.setVelocity(velocity.normalize().multiply(((MinecartEntityAccessor) minecart).invokeGetMaxSpeed() * 10D));
         } else {
             // We aren't moving so let's check if we will hit blocks that will set us moving.
             MinecartUtil.HandleBlockHit(pos, minecart, railShape);

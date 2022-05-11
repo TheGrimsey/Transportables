@@ -75,6 +75,7 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
 
     @Override
     public void tick() {
+        super.tick();
 
         if (this.world.isClient) {
             Optional<UUID> holderId = this.dataTracker.get(CARRIAGE_HOLDER);
@@ -85,39 +86,7 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
                     tickCarriageMovement();
                 }
             }
-        } else {
-            int i = this.getStuckArrowCount();
-            if (i > 0) {
-                if (this.stuckArrowTimer <= 0) {
-                    this.stuckArrowTimer = 20 * (30 - i);
-                }
-
-                --this.stuckArrowTimer;
-                if (this.stuckArrowTimer <= 0) {
-                    this.setStuckArrowCount(i - 1);
-                }
-            }
-
-            int j = this.getStingerCount();
-            if (j > 0) {
-                if (this.stuckStingerTimer <= 0) {
-                    this.stuckStingerTimer = 20 * (30 - j);
-                }
-
-                --this.stuckStingerTimer;
-                if (this.stuckStingerTimer <= 0) {
-                    this.setStingerCount(j - 1);
-                }
-            }
-
-            if (this.age % 20 == 0) {
-                this.getDamageTracker().update();
-            }
         }
-
-        this.tickMovement();
-
-        baseTick();
 
         if (carriageHolder != null) {
             if (!carriageHolder.isAlive())

@@ -10,7 +10,7 @@ public interface MinecartEntityAccessor {
     @Invoker("willHitBlockAt")
     boolean invokeWillHitBlockAt(BlockPos pos);
 
-    @Invoker("getMaxOffRailSpeed")
-    double invokeGetMaxOffRailSpeed();
+    @Invoker("getMaxSpeed")
+    double invokeGetMaxSpeed();
 
 }

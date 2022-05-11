@@ -50,9 +50,9 @@ public class LinkerItem extends Item {
                 int Z = tag.getInt("Z");
 
                 // Limit teleport distance.
-                double sqrDist = context.getBlockPos().getSquaredDistance(X, Y, Z, true);
-                int maxDistance = Transportables.CONFIG.TELESENDER_RANGE;
-                if (sqrDist > maxDistance * maxDistance) {
+                double sqrDist = context.getBlockPos().getSquaredDistance(X, Y, Z);
+                long maxDistance = Math.min(Transportables.CONFIG.TELESENDER_RANGE, 3_000_000_000L);
+                if (maxDistance == -1 || sqrDist > maxDistance * maxDistance) {
                     long distance = Math.round(MathHelper.sqrt((float) sqrDist));
                     context.getPlayer().sendMessage(new TranslatableText("transportables.linker.outofrange", distance, maxDistance), true);
                     return ActionResult.FAIL;
@@ -100,8 +100,8 @@ public class LinkerItem extends Item {
                 if (targetEntity instanceof AbstractCarriageEntity targetCarriageEntity) {
                     // Limit link distance.
                     double sqrDist = entity.getPos().squaredDistanceTo(targetCarriageEntity.getPos());
-                    int maxDistance = Transportables.CONFIG.CARRIAGE_LINK_RANGE;
-                    if (sqrDist > maxDistance * maxDistance) {
+                    long maxDistance = Math.min(Transportables.CONFIG.CARRIAGE_LINK_RANGE, 3_000_000_000L);
+                    if (maxDistance == -1 || sqrDist > maxDistance * maxDistance) {
                         long distance = Math.round(MathHelper.sqrt((float) sqrDist));
                         user.sendMessage(new TranslatableText("transportables.linker.carriage_outofrange", distance, maxDistance), true);
                         return ActionResult.SUCCESS;
