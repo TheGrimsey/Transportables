@@ -9,7 +9,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.passive.HorseBaseEntity;
+import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -44,7 +44,7 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
     final String CARRIAGE_HOLDER_KEY = "carriageHolder";
 
     @Nullable
-    HorseBaseEntity carriageHolder = null;
+    AbstractHorseEntity carriageHolder = null;
 
     protected AbstractCarriageEntity(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
@@ -56,7 +56,7 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
         return this.dataTracker.get(CARRIAGE_HOLDER).isPresent();
     }
 
-    public void setCarriageHolder(HorseBaseEntity carriageHolder) {
+    public void setCarriageHolder(AbstractHorseEntity carriageHolder) {
         this.dataTracker.set(CARRIAGE_HOLDER, Optional.of(carriageHolder.getUuid()));
         this.carriageHolder = carriageHolder;
 
@@ -69,7 +69,7 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
         this.carriageHolder = null;
     }
 
-    public boolean canLinkWith(HorseBaseEntity horseBaseEntity) {
+    public boolean canLinkWith(AbstractHorseEntity horseBaseEntity) {
         return carriageHolder == null && !((HasCarriageInterface)horseBaseEntity).hasCarriage();
     }
 
@@ -82,7 +82,7 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
             if (holderId.isPresent()) {
                 Entity playerVehicle = MinecraftClient.getInstance().player.getVehicle();
                 if (playerVehicle != null && playerVehicle.getUuid().equals(holderId.get())) {
-                    carriageHolder = (HorseBaseEntity) playerVehicle;
+                    carriageHolder = (AbstractHorseEntity) playerVehicle;
                     tickCarriageMovement();
                 }
             }
@@ -95,7 +95,7 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
             Optional<UUID> holderId = this.dataTracker.get(CARRIAGE_HOLDER);
             if (holderId.isPresent()) {
                 Entity carriageHolder = ((ServerWorld) this.world).getEntity(holderId.get());
-                if (carriageHolder instanceof HorseBaseEntity horseEntity && canLinkWith(horseEntity))
+                if (carriageHolder instanceof AbstractHorseEntity horseEntity && canLinkWith(horseEntity))
                     setCarriageHolder(horseEntity);
             }
         }

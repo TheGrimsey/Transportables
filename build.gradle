@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '0.10-SNAPSHOT'
+    id 'fabric-loom' version '0.12-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -13,6 +13,7 @@ group = project.maven_group
 repositories {
     // Cloth Config
     maven { url "https://maven.shedaniel.me/" }
+    maven { url "https://maven.terraformersmc.com/"}
 }
 
 dependencies {
@@ -23,6 +24,10 @@ dependencies {
 
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    modApi("com.terraformersmc:modmenu:4.0.0-beta.3") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
 
     // Cloth Config
     modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") {
