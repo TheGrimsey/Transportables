@@ -1,11 +1,9 @@
 package net.thegrimsey.transportables.items;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
+import net.minecraft.item.*;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.world.World;
@@ -16,7 +14,7 @@ import java.util.List;
 
 public class CarriageItem extends Item {
     public CarriageItem() {
-        super(new FabricItemSettings().maxCount(1).group(ItemGroup.TRANSPORTATION));
+        super(new FabricItemSettings().maxCount(1));
     }
 
     @Override

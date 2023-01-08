@@ -33,7 +33,7 @@ public class LinkerItem extends Item {
     final String carriageKey = "LinkingCarriage";
 
     public LinkerItem() {
-        super(new FabricItemSettings().maxCount(1).group(ItemGroup.TRANSPORTATION));
+        super(new FabricItemSettings().maxCount(1));
     }
 
     @Override

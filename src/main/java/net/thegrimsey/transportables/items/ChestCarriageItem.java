@@ -16,7 +16,7 @@ import java.util.List;
 
 public class ChestCarriageItem extends Item {
     public ChestCarriageItem() {
-        super(new FabricItemSettings().maxCount(1).group(ItemGroup.TRANSPORTATION));
+        super(new FabricItemSettings().maxCount(1));
     }
 
     @Override
