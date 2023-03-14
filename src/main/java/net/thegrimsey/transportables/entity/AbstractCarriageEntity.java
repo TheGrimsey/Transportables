@@ -48,7 +48,7 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
 
     protected AbstractCarriageEntity(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
-        this.stepHeight = 1F;
+        this.setStepHeight(1F);
         Objects.requireNonNull(getAttributeInstance(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE)).setBaseValue(0.95D);
     }
 
@@ -254,7 +254,7 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
     }
 
     @Override
-    public boolean canBeRiddenInWater() {
+    public boolean canBreatheInWater() {
         return true;
     }
 }
