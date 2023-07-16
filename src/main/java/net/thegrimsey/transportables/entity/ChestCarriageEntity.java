@@ -125,7 +125,7 @@ public class ChestCarriageEntity extends AbstractCarriageEntity implements Inven
     }
 
     @Override
-    public void updatePassengerPosition(Entity passenger) {
+    protected void updatePassengerPosition(Entity passenger, Entity.PositionUpdater positionUpdater) {
         if (this.hasPassenger(passenger)) {
             int i = this.getPassengerList().indexOf(passenger);
             double x = -0.7F;
@@ -176,7 +176,7 @@ public class ChestCarriageEntity extends AbstractCarriageEntity implements Inven
     protected void drop(DamageSource source) {
         super.drop(source);
 
-        if (this.world.getGameRules().getBoolean(GameRules.DO_MOB_LOOT)) {
+        if (this.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_LOOT)) {
             // Drop chest.
             dropStack(new ItemStack(Blocks.CHEST, 2));
 

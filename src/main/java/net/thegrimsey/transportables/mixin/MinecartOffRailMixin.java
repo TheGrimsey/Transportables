@@ -25,7 +25,7 @@ public abstract class MinecartOffRailMixin {
     @Inject(method="moveOffRail()V", at = @At(value = "INVOKE"), cancellable = true)
     public void moveOffRail(CallbackInfo ci) {
         AbstractMinecartEntity minecart = (AbstractMinecartEntity) (Object) this;
-        BlockState state = minecart.world.getBlockState(minecart.getBlockPos());
+        BlockState state = minecart.getWorld().getBlockState(minecart.getBlockPos());
 
         // LAUNCHING RAIl.
         if (state.getBlock() instanceof Launching_Rail) {

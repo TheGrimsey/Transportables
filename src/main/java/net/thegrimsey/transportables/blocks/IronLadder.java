@@ -4,7 +4,6 @@ import net.minecraft.block.LadderBlock;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.world.BlockView;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,7 +18,7 @@ public class IronLadder extends LadderBlock {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
-        tooltip.add(new TranslatableText("transportables.iron_ladder.tooltip_01"));
+        tooltip.add(Text.translatable("transportables.iron_ladder.tooltip_01"));
 
         super.appendTooltip(stack, world, tooltip, options);
     }

@@ -1,8 +1,9 @@
 package net.thegrimsey.transportables;
 
 import net.minecraft.item.Item;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import net.thegrimsey.transportables.items.CarriageItem;
 import net.thegrimsey.transportables.items.ChestCarriageItem;
 import net.thegrimsey.transportables.items.LinkerItem;
@@ -19,6 +20,6 @@ public class TransportablesItems {
     }
 
     private static void RegisterItem(String Id, Item item) {
-        Registry.register(Registry.ITEM, new Identifier(Transportables.MODID, Id.toLowerCase()), item);
+        Registry.register(Registries.ITEM, new Identifier(Transportables.MODID, Id.toLowerCase()), item);
     }
 }

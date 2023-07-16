@@ -7,7 +7,6 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.world.World;
 import net.thegrimsey.transportables.entity.ChestCarriageEntity;
@@ -17,7 +16,7 @@ import java.util.List;
 
 public class ChestCarriageItem extends Item {
     public ChestCarriageItem() {
-        super(new FabricItemSettings().maxCount(1).group(ItemGroup.TRANSPORTATION));
+        super(new FabricItemSettings().maxCount(1));
     }
 
     @Override
@@ -37,9 +36,9 @@ public class ChestCarriageItem extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        tooltip.add(new TranslatableText("transportables.chest_carriage.tooltip_01"));
-        tooltip.add(new TranslatableText("transportables.chest_carriage.tooltip_02"));
-        tooltip.add(new TranslatableText("transportables.chest_carriage.tooltip_03"));
+        tooltip.add(Text.translatable("transportables.chest_carriage.tooltip_01"));
+        tooltip.add(Text.translatable("transportables.chest_carriage.tooltip_02"));
+        tooltip.add(Text.translatable("transportables.chest_carriage.tooltip_03"));
         super.appendTooltip(stack, world, tooltip, context);
     }
 }

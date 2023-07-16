@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '0.10-SNAPSHOT'
+    id "fabric-loom" version "1.1.+"
     id 'maven-publish'
 }
 
@@ -13,6 +13,7 @@ group = project.maven_group
 repositories {
     // Cloth Config
     maven { url "https://maven.shedaniel.me/" }
+    maven { url "https://maven.terraformersmc.com/"}
 }
 
 dependencies {

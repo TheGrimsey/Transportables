@@ -1,13 +1,10 @@
 package net.thegrimsey.transportables.items;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
+import net.minecraft.item.*;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.world.World;
 import net.thegrimsey.transportables.entity.CarriageEntity;
@@ -17,7 +14,7 @@ import java.util.List;
 
 public class CarriageItem extends Item {
     public CarriageItem() {
-        super(new FabricItemSettings().maxCount(1).group(ItemGroup.TRANSPORTATION));
+        super(new FabricItemSettings().maxCount(1));
     }
 
     @Override
@@ -37,8 +34,8 @@ public class CarriageItem extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        tooltip.add(new TranslatableText("transportables.carriage.tooltip_01"));
-        tooltip.add(new TranslatableText("transportables.carriage.tooltip_02"));
+        tooltip.add(Text.translatable("transportables.carriage.tooltip_01"));
+        tooltip.add(Text.translatable("transportables.carriage.tooltip_02"));
         super.appendTooltip(stack, world, tooltip, context);
     }
 }

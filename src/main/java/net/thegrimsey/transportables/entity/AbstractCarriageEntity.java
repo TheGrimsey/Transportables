@@ -9,7 +9,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.passive.HorseBaseEntity;
+import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -44,11 +44,11 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
     final String CARRIAGE_HOLDER_KEY = "carriageHolder";
 
     @Nullable
-    HorseBaseEntity carriageHolder = null;
+    AbstractHorseEntity carriageHolder = null;
 
     protected AbstractCarriageEntity(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
-        this.stepHeight = 1F;
+        this.setStepHeight(1F);
         Objects.requireNonNull(getAttributeInstance(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE)).setBaseValue(0.95D);
     }
 
@@ -56,7 +56,7 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
         return this.dataTracker.get(CARRIAGE_HOLDER).isPresent();
     }
 
-    public void setCarriageHolder(HorseBaseEntity carriageHolder) {
+    public void setCarriageHolder(AbstractHorseEntity carriageHolder) {
         this.dataTracker.set(CARRIAGE_HOLDER, Optional.of(carriageHolder.getUuid()));
         this.carriageHolder = carriageHolder;
 
@@ -69,7 +69,7 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
         this.carriageHolder = null;
     }
 
-    public boolean canLinkWith(HorseBaseEntity horseBaseEntity) {
+    public boolean canLinkWith(AbstractHorseEntity horseBaseEntity) {
         return carriageHolder == null && !((HasCarriageInterface)horseBaseEntity).hasCarriage();
     }
 
@@ -77,12 +77,12 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
     public void tick() {
         super.tick();
 
-        if (this.world.isClient) {
+        if (this.getWorld().isClient) {
             Optional<UUID> holderId = this.dataTracker.get(CARRIAGE_HOLDER);
             if (holderId.isPresent()) {
                 Entity playerVehicle = MinecraftClient.getInstance().player.getVehicle();
                 if (playerVehicle != null && playerVehicle.getUuid().equals(holderId.get())) {
-                    carriageHolder = (HorseBaseEntity) playerVehicle;
+                    carriageHolder = (AbstractHorseEntity) playerVehicle;
                     tickCarriageMovement();
                 }
             }
@@ -91,11 +91,11 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
         if (carriageHolder != null) {
             if (!carriageHolder.isAlive())
                 removeCarriageHolder();
-        } else if (!this.world.isClient) { // On the server if a UUID is set in dataTracker then update the carriage holder. Also acts as lazy load from file.
+        } else if (!this.getWorld().isClient) { // On the server if a UUID is set in dataTracker then update the carriage holder. Also acts as lazy load from file.
             Optional<UUID> holderId = this.dataTracker.get(CARRIAGE_HOLDER);
             if (holderId.isPresent()) {
-                Entity carriageHolder = ((ServerWorld) this.world).getEntity(holderId.get());
-                if (carriageHolder instanceof HorseBaseEntity horseEntity && canLinkWith(horseEntity))
+                Entity carriageHolder = ((ServerWorld) this.getWorld()).getEntity(holderId.get());
+                if (carriageHolder instanceof AbstractHorseEntity horseEntity && canLinkWith(horseEntity))
                     setCarriageHolder(horseEntity);
             }
         }
@@ -145,7 +145,7 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
 
     @Override
     public ActionResult interact(PlayerEntity player, Hand hand) {
-        if (!this.world.isClient()) {
+        if (!this.getWorld().isClient()) {
             return player.startRiding(this) ? ActionResult.SUCCESS : ActionResult.FAIL;
         }
 
@@ -153,7 +153,7 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
     }
 
     @Override
-    public void updatePassengerPosition(Entity passenger) {
+    protected void updatePassengerPosition(Entity passenger, Entity.PositionUpdater positionUpdater) {
         if (this.hasPassenger(passenger)) {
             int i = this.getPassengerList().indexOf(passenger);
             // Math out so players are laid out in the corners of the entity.
@@ -244,7 +244,7 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
 
     @Override
     protected void drop(DamageSource source) {
-        if (this.world.getGameRules().getBoolean(GameRules.DO_MOB_LOOT)) {
+        if (this.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_LOOT)) {
             ItemStack drops = new ItemStack(TransportablesItems.CARRIAGE_ITEM);
             if (this.hasCustomName())
                 drops.setCustomName(this.getCustomName());
@@ -254,7 +254,7 @@ public abstract class AbstractCarriageEntity extends LivingEntity {
     }
 
     @Override
-    public boolean canBeRiddenInWater() {
+    public boolean canBreatheInWater() {
         return true;
     }
 }

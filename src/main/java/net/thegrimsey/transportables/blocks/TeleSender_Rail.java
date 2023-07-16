@@ -11,7 +11,6 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
@@ -31,7 +30,7 @@ public class TeleSender_Rail extends AbstractActionRail implements BlockEntityPr
 
     @Override
     public void onMoveOnRail(BlockPos pos, BlockState state, AbstractMinecartEntity minecart, CallbackInfo info) {
-        TeleSender_RailEntity blockEntity = (TeleSender_RailEntity) minecart.world.getBlockEntity(pos);
+        TeleSender_RailEntity blockEntity = (TeleSender_RailEntity) minecart.getWorld().getBlockEntity(pos);
         if (blockEntity == null || !blockEntity.hasDestination() || !state.get(POWERED))
             return;
 
@@ -66,8 +65,8 @@ public class TeleSender_Rail extends AbstractActionRail implements BlockEntityPr
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
-        tooltip.add(new TranslatableText("transportables.telesender_rail.tooltip_01"));
-        tooltip.add(new TranslatableText("transportables.telesender_rail.tooltip_02"));
+        tooltip.add(Text.translatable("transportables.telesender_rail.tooltip_01"));
+        tooltip.add(Text.translatable("transportables.telesender_rail.tooltip_02"));
 
         super.appendTooltip(stack, world, tooltip, options);
     }
