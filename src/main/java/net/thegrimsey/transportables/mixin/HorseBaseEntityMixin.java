@@ -1,11 +1,11 @@
 package net.thegrimsey.transportables.mixin;
 
-import net.minecraft.entity.passive.HorseBaseEntity;
+import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.thegrimsey.transportables.interfaces.HasCarriageInterface;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
-@Mixin(HorseBaseEntity.class)
+@Mixin(AbstractHorseEntity.class)
 public class HorseBaseEntityMixin implements HasCarriageInterface {
     @Unique
     boolean hasCarriage = false;
